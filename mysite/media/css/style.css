@@ -1201,7 +1201,7 @@ Input icons
 
 .input-icon.left input {
   padding-left: 33px !important;
-  width:60%;
+  width: 60%;
 }
 
 /***
@@ -2711,7 +2711,7 @@ Custom tabs
 ***/
 .tab-content {
   padding: 0px;  
-  overflow: hidden;
+  overflow: visible;
 }
 
 .tabbable-custom { 
