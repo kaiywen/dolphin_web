@@ -1,0 +1,80 @@
+{% include "header.html" %}
+
+<!-- END HEAD -->
+
+<!-- BEGIN BODY -->
+
+<body class="page-header-fixed">
+
+    <!-- BEGIN HEADER -->
+
+    {% include 'nav_bar.html' %}
+
+    <!-- END HEADER -->
+
+    <!-- BEGIN CONTAINER -->
+
+    <div class="page-container row-fluid">
+
+        {% include 'side_bar.html' %}
+        <div class="page-content">
+
+
+            <div class="container-fluid">
+
+                <div class="row-fluid">
+
+                    {% block title %} {% endblock %} 
+                    {% block command %} {% endblock %} 
+                    {% block filter %} {% endblock %}
+
+                </div>
+
+                <div class="row-fluid">
+                    {% block table %} {% endblock %}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <div class="footer-inner">
+
+            2014 &copy; Dislab. Nanjing University
+
+        </div>
+
+        <div class="footer-tools">
+            <span class="go-top">
+                <i class="icon-angle-up"></i>
+            </span>
+        </div>
+    </div>
+
+    {% block scripts %} Scripts are not loaded ! {% endblock %}
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37564768-1']);
+    _gaq.push(['_setDomainName', 'keenthemes.com']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+
+<!-- END BODY -->
+
+</body>
+
+</html>

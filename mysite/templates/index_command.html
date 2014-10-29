@@ -1,0 +1,170 @@
+
+<div id="box">
+<div class="circle"></div>
+<div class="circle1"></div>
+<div> <p class="loading_text"> Please waiting... </p></div>
+</div>
+
+<div class="span6">
+    <div class="portlet box purple">
+
+        <div class="portlet-title">
+
+            <div class="caption"><i class="icon-reorder"></i>IPMI COMMAND</div>
+
+            <div class="tools">
+
+                <a href="javascript:;" class="collapse"></a>
+
+            </div>
+
+        </div>
+
+        <div class="portlet-body">
+
+            <div class="row-fluid">
+
+                <div class="span6">
+
+                    <div class="tabbable tabbable-custom">
+
+                        <ul class="nav nav-tabs">
+
+                            <li class="active"><a href="#tab_1_1" data-toggle="tab">Single Command </a>
+                            </li>
+
+                            <li><a href="#tab_1_2" data-toggle="tab">Multiple Commands</a>
+                            </li>
+
+                        </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_1_1">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>HOST IP</th>
+                                            <th>USERNAME</th>
+                                            <th>PASSWORD</th>
+                                            <th>HISTORY</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th id="command">
+                                                <div class="controls">
+                                                    <input class="span6 m-wrap" id="s_input_ipv4" type="text" />
+                                                    <span class="help-inline">eg : 192.168.120.150</span>
+                                                </div>
+                                            </th>
+                                            <th id="command">
+                                                <input class="m-wrap" type="text" placeholder="username" id="s_username">
+                                            </th>
+                                            <th id="command">
+                                                <input class="m-wrap" type="text" placeholder="password" id="s_password">
+                                            </th>
+                                            <th id="history">
+                                                <div class="controls">
+                                                    <select class="span6 chosen" data-placeholder="history" tabindex="1">
+                                                        <option value=""></option>
+                                                        <option value="Category 1">Category 1</option>
+                                                        <option value="Category 2">Category 2</option>
+                                                        <option value="Category 3">Category 5</option>
+                                                        <option value="Category 4">Category 4</option>
+                                                        <option value="Category 5">Category 3</option>
+                                                    </select>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <button type="submit" class="btn green pull-right" id="s_exec_ipmi">
+                                                    exec_ipmi
+                                                </button>
+                                            </th>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="tab-pane" id="tab_1_2">
+                                <table class="table table-striped table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>
+                                                <div class="control-group" id="control-group">
+                                                    <label class="control-label">Commands</label>
+                                                    <div class="controls">
+                                                        <textarea class="span12 wysihtml5 m-wrap" rows="7"></textarea>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <table class="table table-striped table-hover">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>
+                                                                <label>Username:</label>
+                                                            </th>
+                                                            <th>
+                                                                <input class="m-wrap" type="text" placeholder="username" id="s_username">
+                                                            </th>
+                                                            <th>
+                                                                <button type="submit" class="btn green" id="m_exec_ipmi">
+                                                                    add_cmd
+                                                                </button>
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>
+                                                                <label>Password:</label>
+                                                            </th>
+                                                            <th>
+                                                                <input class="m-wrap" type="text" placeholder="password" id="s_password">
+                                                            </th>
+                                                            <th>
+                                                                <button type="submit" class="btn green" id="s_exec_ipmi">
+                                                                    del_cmd
+                                                                </button>
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>
+                                                                <label>IP address:</label>
+                                                            </th>
+                                                            <th>
+                                                                <div class="controls">
+                                                                    <input class="span6 m-wrap" id="m_input_ipv4" type="text" />
+                                                                </div>
+                                                            </th>
+                                                            <th>
+                                                                <button type="submit" class="btn green" id="s_exec_ipmi">
+                                                                    exec_ipmi
+                                                                </button>
+                                                            </th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </th>
+                                            <th>
+                                                <div class="control-group" id="control-group">
+                                                    <label class="control-label">History</label>
+                                                    <div class="controls">
+                                                        <textarea class="span12 wysihtml5 m-wrap" rows="7"></textarea>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="tab-pane" id="tab_1_3">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
