@@ -1201,6 +1201,7 @@ Input icons
 
 .input-icon.left input {
   padding-left: 33px !important;
+  width:60%;
 }
 
 /***
@@ -1331,7 +1332,7 @@ Portlets
 
 .portlet-title .actions > .btn-group {
   margin-top: -12px;
-}
+}33px !important
 
 .portlet-title .actions > .btn {
   padding: 4px 10px;
