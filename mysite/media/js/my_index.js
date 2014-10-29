@@ -14,24 +14,3 @@ $("#s_exec_ipmi").click(function() {
     $('.blockOverlay').attr('title', '单击关闭').click($.unblockUI);
 });
 
-/*            var username = $("#s_username").val();
-            var password = $("#s_password").val();
-            var ip_addr = $("#input_ipv4").val();
-            alert(ip_addr);
-            alert(username);
-            alert(password);
-            $.ajax({
-                type: 'POST',
-                url: "/exec.html/",
-                cache: false,
-                data: {
-                    "username": username,
-                    "password": password,
-                    "ip": ip_addr
-                },
-                success: function(data, textStatus) {
-                    if (data == "error") {} else {}
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {}
-
-            });*/

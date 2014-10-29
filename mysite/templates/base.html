@@ -23,13 +23,17 @@
             <div class="container-fluid">
 
                 <div class="row-fluid">
-
-                    {% block title %} {% endblock %} 
-                    {% block command %} {% endblock %} 
-                    {% block filter %} {% endblock %}
-
+                    {% block title %} {% endblock %}
                 </div>
-
+                
+                <div class="row-fluid">
+                    {% block command %} {% endblock %}
+                </div>
+                
+                <div class="row-fluid">
+                    {% block filter %} {% endblock %}
+                </div>
+                
                 <div class="row-fluid">
                     {% block table %} {% endblock %}
                 </div>

@@ -439,7 +439,8 @@ var FormComponents = function () {
     }
 
     var handleIPAddressInput = function () {
-        $('#input_ipv4').ipAddress();
+        $('#s_input_ipv4').ipAddress();
+        $('#m_input_ipv4').ipAddress();
         $('#input_ipv6').ipAddress({v:6});
     }
 

@@ -1,12 +1,8 @@
-#command {
-    width: 20%;
+
+/*#severity, #type, #keyword {
+    width: 80%;
 }
-#history {
-    width: 26%;
-}
-#severity, #type, #keyword {
-    width: 30%;
-}
+*/
 .severity, .type {
     width: 60%;
 }
