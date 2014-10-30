@@ -23,6 +23,8 @@ jQuery.validator.addMethod("ip",
     },
     "Please enter a valid ip address.");
 
+
+
 var SexecForm = function() {
 
     return {
@@ -75,27 +77,37 @@ var SexecForm = function() {
                 },
 
                 submitHandler: function(form) {
-                    /*                    var username = $("#username").val();
-                                        var password = $("#password").val();
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: "/login.html/",
-                                            cache: false,
-                                            data: {
-                                                "username": username,
-                                                "password": password
-                                            },
-                                            success: function(data, textStatus) {
-                                                if (data == "error") {
-                                                    $(".alert-error span").html("incorrect username or password !");
-                                                    $(".alert-error").show();
-                                                } else {
-                                                    window.location.href = data;
-                                                }
-                                            },
-                                            error: function(XMLHttpRequest, textStatus, errorThrown) {}
+                    $.blockUI({
+                        message: $('#box'),
+                        applyPlatformOpacityRules: false,
+                        css: {
+                            top: '23%',
+                            left: '40%',
+                            textAlign: 'center',
+                            marginLeft: '0px',
+                            marginTop: '0px',
+                            width: '400px',
+                            background: 'none'
+                        }
+                    });
+                    var username = $("#s_username").val();
+                    var password = $("#s_password").val();
+                    var ip_addr = $("#s_input_ipv4").val();
+                    $.ajax({
+                        type: 'POST',
+                        url: "/query.html/",
+                        cache: false,
+                        data: {
+                            "username": username,
+                            "password": password,
+                            "ip_addr": ip_addr
+                        },
+                        success: function(data, textStatus) {
+                            $.unblockUI();
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {}
 
-                                        });*/
+                    });
                 }
             });
         }

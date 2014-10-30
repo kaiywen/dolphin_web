@@ -10,7 +10,7 @@ var FormComponents = function () {
                 "stylesheets": ["assets/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
             });
         }
-    }
+    };
 
     var resetWysihtml5 = function () {
         if (!jQuery().wysihtml5) {
@@ -22,7 +22,7 @@ var FormComponents = function () {
                 "stylesheets": ["assets/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
             });
         }
-    }
+    };
 
     var handleToggleButtons = function () {
         if (!jQuery().toggleButtons) {
@@ -70,7 +70,7 @@ var FormComponents = function () {
                 'font-style': 'italic'
             }
         });
-    }
+    };
 
     var handleTagsInput = function () {
         if (!jQuery().tagsInput) {
@@ -85,11 +85,11 @@ var FormComponents = function () {
         $('#tags_2').tagsInput({
             width: 240
         });
-    }
+    };
 
     var handlejQueryUIDatePickers = function () {
         $( ".ui-date-picker" ).datepicker();
-    }
+    };
 
     var handleDatePickers = function () {
 
@@ -98,7 +98,7 @@ var FormComponents = function () {
                 rtl : App.isRTL()
             });
         }
-    }
+    };
 
     var handleTimePickers = function () {
         
@@ -110,7 +110,7 @@ var FormComponents = function () {
                 showMeridian: false
             });
         }
-    }
+    };
 
     var handleDateRangePickers = function () {
         if (!jQuery().daterangepicker) {
@@ -228,7 +228,7 @@ var FormComponents = function () {
             days: -29
         }).toString('MMMM d, yyyy') + ' - ' + Date.today().toString('MMMM d, yyyy'));
 
-    }
+    };
 
     var handleDatetimePicker = function () {        
 
@@ -253,7 +253,7 @@ var FormComponents = function () {
             pickerPosition: (App.isRTL() ? "bottom-right" : "bottom-left"),
             todayBtn: true
         });
-    }
+    };
 
     var handleClockfaceTimePickers = function () {
 
@@ -286,7 +286,7 @@ var FormComponents = function () {
         $('.clockface_3').clockface({
             format: 'H:mm'
         }).clockface('show', '14:30');
-    }
+    };
 
     var handleColorPicker = function () {
         if (!jQuery().colorpicker) {
@@ -296,7 +296,7 @@ var FormComponents = function () {
             format: 'hex'
         });
         $('.colorpicker-rgba').colorpicker();
-    }
+    };
 
     var handleSelec2 = function () {
 
@@ -360,7 +360,7 @@ var FormComponents = function () {
             } else if (movie.synopsis !== undefined) {
                 markup += "<div class='movie-synopsis'>" + movie.synopsis + "</div>";
             }
-            markup += "</td></tr></table>"
+            markup += "</td></tr></table>";
             return markup;
         }
 
@@ -411,14 +411,14 @@ var FormComponents = function () {
                 return m;
             } // we do not want to escape markup since we are displaying html in results
         });
-    }
+    };
 
     var handleMultiSelect = function () {
         $('#my_multi_select1').multiSelect();
         $('#my_multi_select2').multiSelect({
             selectableOptgroup: true
         });        
-    }
+    };
 
     var handleInputMasks = function () {
         $.extend($.inputmask.defaults, {
@@ -436,13 +436,12 @@ var FormComponents = function () {
        
         $("#mask_currency2").inputmask('€ 999,999,999.99', { numericInput: true, rightAlignNumerics: false, greedy: false}); //123456  =>  € ___.__1.234,56
         $("#mask_ssn").inputmask("999-99-9999", {placeholder:" ", clearMaskOnLostFocus: true }); //default
-    }
+    };
 
     var handleIPAddressInput = function () {
-        $('#s_input_ipv4').ipAddress();
-        $('#m_input_ipv4').ipAddress();
+        $('.input-ipv4').ipAddress();
         $('#input_ipv6').ipAddress({v:6});
-    }
+    };
 
     return {
         //main function to initiate the module
@@ -464,7 +463,7 @@ var FormComponents = function () {
 
             App.addResponsiveHandler(function(){
                 resetWysihtml5();
-            })
+            });
         }
 
     };

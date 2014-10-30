@@ -74,7 +74,26 @@ var Login = function() {
             $('.login-form input').keypress(function(e) {
                 if (e.which == 13) {
                     if ($('.login-form').validate().form()) {
-                        window.location.href = "index.html";
+                        var username = $("#username").val();
+                        var password = $("#password").val();
+                        $.ajax({
+                            type: 'POST',
+                            url: "/login.html/",
+                            cache: false,
+                            data: {
+                                "username": username,
+                                "password": password
+                            },
+                            success: function(data, textStatus) {
+                                if (data == "error") {
+                                    $(".alert-error span").html("incorrect username or password !");
+                                    $(".alert-error").show();
+                                } else {
+                                    window.location.href = data;
+                                }
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {}
+                        });
                     }
                     return false;
                 }

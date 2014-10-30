@@ -41,7 +41,7 @@
 
       if (ms.next('.ms-container').length === 0){
         ms.css({ position: 'absolute', left: '-9999px' });
-        ms.attr('id', ms.attr('id') ? ms.attr('id') : 'ms-'+Math.ceil(Math.random()*1000));
+        ms.attr('id', ms.attr('id') ? ms.attr('id') : 'ms-' + Math.ceil(Math.random()*1000));
 
         var optgroupLabel = null,
             optgroupId = null,
