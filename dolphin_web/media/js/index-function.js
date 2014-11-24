@@ -81,7 +81,23 @@ var SexecForm = function() {
                     s_input_ipv4: { ip: "A valid IP is required." }
                 },
                 submitHandler: function(form) { 
-                    block.appear();
+                    var username = $("#s_username").val();
+                    var password = $("#s_password").val();
+                    var ip_addr = $("#s_input_ipv4").val();
+                    var string = username + "    " + ip_addr;
+                    var cmd = "<li id='history_chosen_chzn_o_3' class='active-result' style>" + string + "</li>";
+                    var option = "<option value='" + string + "'>" + string + "</option>";
+                    var length = $("#history_chosen_chzn .chzn-results li").length;
+                    if (length < 6) {
+                        $("#history-chosen").append(option);
+                        $("#history_chosen_chzn .chzn-results").append(cmd);
+                    }
+                    else {
+                        $("#history_chosen_chzn .chzn-results").children('li:eq(0)').remove();
+                        
+                        $("#history_chosen_chzn").append(option);
+                        $("#history_chosen_chzn .chzn-results").append(cmd);
+                    }
                 }
             });
         }
@@ -132,4 +148,9 @@ $("#m_exec_add").click(function() {
         var cmd = "<li>" + username + " " + ip_addr + "</li>";
         $("ul#cmd").append(cmd);
     }
+});
+
+$("#history_chosen_chzn .chzn-results li:eq(0)").click(function() {
+/*    var string = $(this).html();
+    alert("abc");
 });

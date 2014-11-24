@@ -34,16 +34,10 @@ class Info(models.Model):
     """
         Data model for IpmiInfo table
     """
-    record_id = models.CharField(max_length=10)
-    record_type = models.CharField(max_length=10) #TAG
-    timestamp = models.CharField(max_length=50) #TAG
-    generator_id = models.CharField(max_length=10)
-    event_revision = models.CharField(max_length=10) #TAG
-    sensor_type = models.CharField(max_length=50)
-    sensor_num = models.CharField(max_length=10)
-    event_type = models.CharField(max_length=100)
-    event_dir = models.CharField(max_length=50)
-    event_data = models.CharField(max_length=30) #TAG
-    event_descrip = models.CharField(max_length=100) #TAG
-    sel_entry = models.CharField(max_length=30)
+    sel_id = models.IntegerField()
+    sel_type = models.SmallIntegerField()
+    level = models.CharField(max_length=30)
+    desc = models.CharField(max_length=40)
+    info = models.CharField(max_length=400)
     request = models.ForeignKey(Request)
+    host = models.ForeignKey(RequestHost)
