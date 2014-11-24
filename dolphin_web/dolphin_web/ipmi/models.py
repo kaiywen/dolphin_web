@@ -36,8 +36,8 @@ class Info(models.Model):
     """
     sel_id = models.IntegerField()
     sel_type = models.SmallIntegerField()
-    level = models.CharField(max_length=30)
-    desc = models.CharField(max_length=40)
-    info = models.CharField(max_length=400)
+    sel_level = models.CharField(max_length=30)
+    sel_desc = models.CharField(max_length=40)
+    sel_info = models.CharField(max_length=800)
     request = models.ForeignKey(Request)
     host = models.ForeignKey(RequestHost)

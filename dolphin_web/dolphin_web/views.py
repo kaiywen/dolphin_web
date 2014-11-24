@@ -13,6 +13,7 @@ from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
 from ipmi.models import Request, RequestHost, Info
+import json
 
 def login_view(request):
     """
@@ -31,7 +32,7 @@ def index_view(request):
         Corresponding URL : (ip:port/index.html)
     """
     if request.user.is_authenticated():
-        ipmi_entry_list = Info.objects.all()   
+        ipmi_entry_list = Info.objects.all() 
         return render_to_response('index.html', {'ipmi_entry_list': ipmi_entry_list})
     else:
         return HttpResponseRedirect('/')

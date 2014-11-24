@@ -6,17 +6,19 @@ var TableAdvanced = function() {
         function fnFormatDetails(oTable, nTr) {
             var aData = oTable.fnGetData(nTr);
             var sOut = '<table>';
-            sOut += '<tr><td>Record ID:</td><td>' + aData[6] + '</td>';
-            sOut += '<td>Record Type:</td><td>' + aData[1] + '</td></tr>';
-            sOut += '<tr><td>Timestamp:</td><td>' + aData[2] + '</td>';
-            sOut += '<td>Generator ID:</td><td>' + aData[7] + '</td></tr>';
-            sOut += '<tr><td>Event Revision:</td><td>' + aData[3] + '</td>';
-            sOut += '<td>Sensor Type:</td><td>' + aData[8] + '</td></tr>';
-            sOut += '<tr><td>Sensor Num:</td><td>' + aData[9] + '</td>';
-            sOut += '<td>Event Type:</td><td>' + aData[10] + '</td></tr>';
-            sOut += '<tr><td>Event Dir:</td><td>' + aData[11] + '</td>';
-            sOut += '<td>Event Data:</td><td>' + aData[4] + '</td></tr>';
-            sOut += '<td>Event Description:</td><td>' + aData[5] + '</td>';
+            var sel = $.parseJSON(aData[6]);
+            var i = 0;
+            for(var key in sel) {
+                if (i % 2 == 0) {
+                    sOut += '<tr>';
+                }
+                sOut += "<td class='sel-detail-td1'>" + key + 
+                    ":</td><td class='sel-detail-td2'>" + sel[key] + '</td>';
+                if (i % 2 == 1) {
+                    sOut += '</tr>';
+                }
+                i++;
+            }
             sOut += '</table>';
             return sOut;
         }

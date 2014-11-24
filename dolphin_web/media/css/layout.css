@@ -9,6 +9,29 @@
 .th-hidden, .td-hidden {
     display: none;
 }
+
+.table-text {
+    text-align: center;
+}
+
+.li-selectable {
+    cursor: pointer;
+    border-bottom: solid 1px rgb(164, 214, 216);
+}
+
+.log-detail-th {
+    width: 20%;
+}
+
+.sel-detail-td1 {
+    width: 7%;
+}
+
+.sel-detail-td2 {
+    width: 15%;
+}
+
+
 #box {
     margin: 0 auto;
     background-color: rgb(64, 64, 64);
@@ -19,13 +42,17 @@
     -moz-border-radius: 10px;
     display: none;
 }
+
 .loading_text {
     color: white;
     font-size: 30px;
 }
+
 .cmd-td {
-    width: 23%;
+    width: 25%;
+    margin-right: 30px;
 }
+
 .cmd-list {
     border: 1px solid #ccc;
     border-color: rgba(82, 168, 236, 0.8);

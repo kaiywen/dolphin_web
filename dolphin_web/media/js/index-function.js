@@ -85,19 +85,6 @@ var SexecForm = function() {
                     var password = $("#s_password").val();
                     var ip_addr = $("#s_input_ipv4").val();
                     var string = username + "    " + ip_addr;
-                    var cmd = "<li id='history_chosen_chzn_o_3' class='active-result' style>" + string + "</li>";
-                    var option = "<option value='" + string + "'>" + string + "</option>";
-                    var length = $("#history_chosen_chzn .chzn-results li").length;
-                    if (length < 6) {
-                        $("#history-chosen").append(option);
-                        $("#history_chosen_chzn .chzn-results").append(cmd);
-                    }
-                    else {
-                        $("#history_chosen_chzn .chzn-results").children('li:eq(0)').remove();
-                        
-                        $("#history_chosen_chzn").append(option);
-                        $("#history_chosen_chzn .chzn-results").append(cmd);
-                    }
                 }
             });
         }
@@ -127,6 +114,7 @@ var MexecForm = function() {
     };
 }();
 
+var passwd_array = [];
 $("#m_exec_add").click(function() {
     var form = $('#m-exec-form');
     form.validate({
@@ -145,12 +133,23 @@ $("#m_exec_add").click(function() {
         var username = $("#m_username").val();
         var password = $("#m_password").val();
         var ip_addr = $("#m_input_ipv4").val();
-        var cmd = "<li>" + username + " " + ip_addr + "</li>";
+        var cmd = "<li class='li-selectable'>" + "User: " + username + "  " + "IP: " + ip_addr + "</li>";
         $("ul#cmd").append(cmd);
+        passwd_array.push(password);
     }
 });
 
-$("#history_chosen_chzn .chzn-results li:eq(0)").click(function() {
-/*    var string = $(this).html();
-    alert("abc");
+$('li.li-selectable').live('click', function() {
+  $(this).css('background', 'rgba(82, 168, 236, 0.8)')
+  $(this).addClass("li-cmd-selected");
+  $(this).siblings().css('background', 'none');
+  $(this).siblings().removeClass("li-cmd-selected");
+});
+
+$("#m_exec_del").click(function() {
+  var index = $("li.li-cmd-selected").index();
+  if (index != -1) {
+    $("li.li-cmd-selected").remove();
+    passwd_array.splice(index, 1);
+  }
 });
