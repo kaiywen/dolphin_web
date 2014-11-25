@@ -27,15 +27,17 @@
 
                                 <div class="controls">
 
-                                    <select class="span12 chosen" data-placeholder="Choose Severity" tabindex="1">
+                                    <select class="span12 chosen" data-placeholder="Choose severity" tabindex="1" id="chosen-severity">
 
                                         <option value=""></option>
 
-                                        <option value="ERROR">Error</option>
+                                        <option value="ALL" selected="selected">ALL</option>
 
-                                        <option value="WARNING">Warning</option>
+                                        <option value="ERROR">ERROR</option>
 
-                                        <option value="INFO">Information</option>
+                                        <option value="WARNING">WARNING</option>
+
+                                        <option value="INFO">INFO</option>
 
                                     </select>
 
@@ -44,37 +46,6 @@
                             </div>
                         </td>
 
-                        <td>
-                            <div class="control-group type" id="type">
-
-                                <label class="control-label">Log Type:</label>
-
-                                <div class="controls">
-
-                                    <select class="span12 chosen" data-placeholder="Choose Type" tabindex="1">
-
-                                        <option value=""></option>
-
-                                        <option value="Category 1">Category 1</option>
-
-                                        <option value="Category 2">Category 2</option>
-
-                                    </select>
-
-                                </div>
-                            </div>
-                        </td>
-
-                        <td id="keyword">
-                            <div class="control-group keyword">
-
-                                <label class="control-label">Key Word</label>
-                                <input class="m-wrap" type="text" placeholder="keyword">
-                            </div>
-                        </td>
-
-                    </tr>
-                    <tr>
                         <td>
                             <div class="control-group">
 
@@ -82,9 +53,9 @@
 
                                 <div class="controls">
 
-                                    <div class="input-append date form_datetime" data-date="2012-12-21T15:25:00Z">
+                                    <div class="input-append date form_datetime" data-date="2012-12-21T15:25:00Z" >
 
-                                        <input size="16" type="text" value="" readonly class="m-wrap">
+                                        <input size="16" type="text" value="" readonly class="m-wrap" id="date-from">
 
                                         <span class="add-on"><i class="icon-remove"></i>
                                         </span>
@@ -98,7 +69,6 @@
 
                             </div>
                         </td>
-
                         <td>
                             <div class="control-group">
 
@@ -108,7 +78,7 @@
 
                                     <div class="input-append date form_datetime" data-date="2012-12-21T15:25:00Z">
 
-                                        <input size="16" type="text" value="" readonly class="m-wrap">
+                                        <input size="16" type="text" value="" readonly class="m-wrap" id="date-to">
 
                                         <span class="add-on"><i class="icon-remove"></i>
                                         </span>
@@ -130,7 +100,7 @@
 
                                     <div class="search">
 
-                                        <button type="submit" class="btn green" id="exec_ipmi">
+                                        <button type="button" class="btn green" id="search">
                                             Search
                                         </button>
                                     </div>

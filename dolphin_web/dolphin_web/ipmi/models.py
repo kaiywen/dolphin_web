@@ -11,8 +11,8 @@ class Request(models.Model):
         Data model for Request table
     """
     start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    status = models.SmallIntegerField()
+    end_time = models.DateTimeField(null=True)
+    status = models.SmallIntegerField(null=True)
     detail = models.CharField(max_length=100)
 
 
@@ -24,8 +24,8 @@ class RequestHost(models.Model):
     username = models.CharField(max_length=30)
     password = models.CharField(max_length=30)
     start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    status = models.SmallIntegerField()
+    end_time = models.DateTimeField(null=True)
+    status = models.SmallIntegerField(null=True)
     detail = models.CharField(max_length=100)
     request = models.ForeignKey(Request)
 

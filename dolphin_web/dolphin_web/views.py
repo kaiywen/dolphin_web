@@ -2,18 +2,19 @@
     View functions for dolphin project
     Author: YuanBao
     Email: wenkaiyuan123@gmail.com
-
 """
 
 from django.http import HttpResponse
 from django.http import Http404
 from django.http import HttpResponseRedirect
-# from django.template.loader import get_template
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
 from ipmi.models import Request, RequestHost, Info
-import json
+from django.utils import timezone
+from xmlrpclib import ServerProxy
+from settings import REMOTE_SERVER_IP, REMOTE_SERVER_PORT, LOCAL_IP, LOCAL_PORT
+import const
 
 def login_view(request):
     """
@@ -82,13 +83,41 @@ def history_view(request):
         return HttpResponseRedirect('/')
 
 
-def query_view(request):
+request_status = dict()
+
+@csrf_exempt
+def single_cmd_view(request):
     """
         TODO (Kaiyuan)
     """
-    username = request.POST["username"]
-    password = request.POST["password"]
-    id_addr = request.POST["ip_addr"]
+    username, password, ip = (
+        request.POST["username"], 
+        request.POST["password"],
+        request.POST["ip_addr"]
+    )
 
-    ### TODO(Kaiyuan) Querying logic
+    ### TODO (Kaiyuan) 
+    ### Exception handler for empty parameters
     
+    request = Request(start_time=timezone.now(), detail='')
+    request.save()
+    
+    request_host = RequestHost(
+        ip_addr=ip, username=username, 
+        password=password, 
+        start_time=timezone.now(), 
+        request_id=request.id, 
+        detail='' )
+
+    request_host.save()
+
+    server_addr = "http://%s:%s" % (REMOTE_SERVER_IP, REMOTE_SERVER_PORT)
+    dolphind_cb_url = "http://%s:%s/callback.html/" % (LOCAL_IP, LOCAL_PORT)
+    
+    dolphind = ServerProxy(server_addr)
+    dolphind.request(request.id, dolphind_cb_url)
+
+
+def dolphind_cb_view(request):
+    request_id, status = (request.GET["id"], request.GET["status"])
+    request_status[request_id] = status

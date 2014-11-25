@@ -4,7 +4,7 @@
 */
 
 .severity, .type {
-    width: 60%;
+    width: 100%;
 }
 .th-hidden, .td-hidden {
     display: none;

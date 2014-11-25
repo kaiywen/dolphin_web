@@ -1,30 +1,34 @@
-var TableManaged = function () {
+var TableManaged = function() {
 
     return {
 
         //main function to initiate the module
-        init: function () {
-            
+        init: function() {
+
             if (!jQuery().dataTable) {
                 return;
             }
 
             // begin first table
             $('#sample_1').dataTable({
-                "aoColumns": [
-                  { "bSortable": false },
-                  null,
-                  { "bSortable": false },
-                  null,
-                  { "bSortable": false },
-                  { "bSortable": false }
+                "aoColumns": [{
+                        "bSortable": false
+                    },
+                    null, {
+                        "bSortable": false
+                    },
+                    null, {
+                        "bSortable": false
+                    }, {
+                        "bSortable": false
+                    }
                 ],
                 "aLengthMenu": [
                     [5, 15, 20, -1],
                     [5, 15, 20, "All"] // change per page values here
                 ],
                 // set the initial value
-                "iDisplayLength": 5,
+                "iDisplayLength": 10,
                 "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
                 "sPaginationType": "bootstrap",
                 "oLanguage": {
@@ -35,16 +39,16 @@ var TableManaged = function () {
                     }
                 },
                 "aoColumnDefs": [{
-                        'bSortable': false,
-                        'aTargets': [0]
-                    }
-                ]
+                    'bSortable': false,
+                    'aTargets': [0]
+                }]
+
             });
 
-            jQuery('#sample_1 .group-checkable').change(function () {
+            jQuery('#sample_1 .group-checkable').change(function() {
                 var set = jQuery(this).attr("data-set");
                 var checked = jQuery(this).is(":checked");
-                jQuery(set).each(function () {
+                jQuery(set).each(function() {
                     if (checked) {
                         $(this).attr("checked", true);
                     } else {
@@ -76,16 +80,15 @@ var TableManaged = function () {
                     }
                 },
                 "aoColumnDefs": [{
-                        'bSortable': false,
-                        'aTargets': [0]
-                    }
-                ]
+                    'bSortable': false,
+                    'aTargets': [0]
+                }]
             });
 
-            jQuery('#sample_2 .group-checkable').change(function () {
+            jQuery('#sample_2 .group-checkable').change(function() {
                 var set = jQuery(this).attr("data-set");
                 var checked = jQuery(this).is(":checked");
-                jQuery(set).each(function () {
+                jQuery(set).each(function() {
                     if (checked) {
                         $(this).attr("checked", true);
                     } else {
@@ -117,16 +120,15 @@ var TableManaged = function () {
                     }
                 },
                 "aoColumnDefs": [{
-                        'bSortable': false,
-                        'aTargets': [0]
-                    }
-                ]
+                    'bSortable': false,
+                    'aTargets': [0]
+                }]
             });
 
-            jQuery('#sample_3 .group-checkable').change(function () {
+            jQuery('#sample_3 .group-checkable').change(function() {
                 var set = jQuery(this).attr("data-set");
                 var checked = jQuery(this).is(":checked");
-                jQuery(set).each(function () {
+                jQuery(set).each(function() {
                     if (checked) {
                         $(this).attr("checked", true);
                     } else {
