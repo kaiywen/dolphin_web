@@ -82,25 +82,45 @@ var SexecForm = function() {
                     var username = $("#s_username").val();
                     var password = $("#s_password").val();
                     var ip_addr = $("#s_input_ipv4").val();
-                    $.ajax({
-                        type: 'POST',
-                        url: "/single_cmd.html/",
-                        cache: false,
-                        data: {
-                            "username": username,
-                            "password": password,
-                            "ip_addr": ip_addr
-                        },
-                        success: function(data, textStatus) {
-                            if (data == "error") {
-                                $(".alert-error span").html("incorrect username or password !");
-                                $(".alert-error").show();
-                            } else {
-                                alert(data);
-                            }
-                        },
-                        error: function(XMLHttpRequest, textStatus, errorThrown) {}
-                    });
+                    (function poll(un="", pw="", ip="", rt=2){
+                        $.ajax({
+                            type: 'POST',
+                            url: "/single_cmd.html/",
+                            cache: false,
+                            data: {
+                                "username": un,
+                                "password": pw,
+                                "ip_addr": ip,
+                                "request_type": rt
+                            },
+                            success: function(data, textStatus) {
+                                switch (data) {
+                                    case "error":
+                                        $(".alert-error span").html("incorrect username or password !");
+                                        $(".alert-error").show();
+                                        break;
+                                    case "1":
+                                        $("#box p" ).html(" Running commands, wait please!");
+                                        poll();
+                                        break;
+                                    case "2":
+                                        $("#box p" ).html(" Querying finished !");
+                                        $('#box').click(
+                                            poll(un="", pw="", ip="", rt=3);
+                                        );
+                                        break;
+                                    case "3":
+                                        $("#box p" ).html(" Querying failed !");
+                                        break;
+                                    default:
+                                        $("#sel_table").html(data);
+                                        $.blockUI;
+                                }
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {}
+                        });
+                    })(username, password, ip_addr, 1);
+                    block.appear();
                 }
             });
         }
@@ -158,16 +178,9 @@ var MexecForm = function() {
                             "cmd_list": encoded_cmd_list
                         },
                         success: function(data, textStatus) {
-                            if (data == "error") {
-                                $(".alert-error span").html("incorrect username or password !");
-                                $(".alert-error").show();
-                            } else {
-                                alert(data);
-                            }
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {}
                     });
-                    //block.appear();
                 }
             });
         }
