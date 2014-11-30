@@ -82,16 +82,17 @@ var SexecForm = function() {
                     var username = $("#s_username").val();
                     var password = $("#s_password").val();
                     var ip_addr = $("#s_input_ipv4").val();
-                    (function poll(un = "", pw = "", ip = "", rt = 2) {
+                    (function poll(un = "", pw = "", ip = "", rt = 1, rc = 1) {
                         $.ajax({
                             type: 'POST',
-                            url: "/single_cmd.html/",
+                            url: "/sel_query.html/",
                             cache: false,
                             data: {
                                 "username": un,
                                 "password": pw,
                                 "ip_addr": ip,
-                                "request_type": rt
+                                "request_type": rt,
+                                "request_class": rc
                             },
                             success: function(data, textStatus) {
                                 switch (data) {
@@ -101,12 +102,12 @@ var SexecForm = function() {
                                         break;
                                     case "1":
                                         $("#box p").html(" Running commands, wait please!");
-                                        poll();
+                                        poll("", "", "", 2, 1);
                                         break;
                                     case "2":
                                         $("#box p").html(" Querying finished !");
                                         $('#box').click(function() {
-                                            poll(un = "", pw = "", ip = "", rt = 3);
+                                            poll("", "", "", 3, 1);
                                             $.unblockUI();
                                         });
                                         break;
@@ -120,7 +121,7 @@ var SexecForm = function() {
                             },
                             error: function(XMLHttpRequest, textStatus, errorThrown) {}
                         });
-                    })(username, password, ip_addr, 1);
+                    })(username, password, ip_addr, 1, 1);
                     block.appear();
                 }
             });
@@ -171,40 +172,47 @@ var MexecForm = function() {
                         cmd_list.push(cmd);
                     });
                     var encoded_cmd_list = $.toJSON(cmd_list);
-                    $.ajax({
-                        type: 'POST',
-                        url: "/multi_cmd.html/",
-                        cache: false,
-                        data: {
-                            "cmd_list": encoded_cmd_list
-                        },
-                        success: function(data, textStatus) {
-                            switch (data) {
-                                case "error":
-                                    $(".alert-error span").html("incorrect username or password !");
-                                    $(".alert-error").show();
-                                    break;
-                                case "1":
-                                    $("#box p").html(" Running commands, wait please!");
-                                    poll();
-                                    break;
-                                case "2":
-                                    $("#box p").html(" Querying finished !");
-                                    $('#box').click(function() {
-                                        poll(un = "", pw = "", ip = "", rt = 3);
-                                        $.unblockUI();
-                                    });
-                                    break;
-                                case "3":
-                                    $("#box p").html(" Querying failed !");
-                                    break;
-                                default:
-                                    $("#table-div").html(data);
-                                    TableAdvanced.init();
-                            }
-                        },
-                        error: function(XMLHttpRequest, textStatus, errorThrown) {}
-                    });
+
+                    (function poll(cmd = "", rt = 1, rc = 2) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "/sel_query.html/",
+                            cache: false,
+                            data: {
+                                "cmd_list": cmd,
+                                "request_type": rt,
+                                "request_class": rc
+                            },
+                            success: function(data, textStatus) {
+                                switch (data) {
+                                    case "error":
+                                        $(".alert-error span").html("incorrect username or password !");
+                                        $(".alert-error").show();
+                                        break;
+                                    case "1":
+                                        $("#box p").html("Running commands, wait please !");
+                                        poll("", 2, 2);
+                                        break;
+                                    case "2":
+                                        $("#box p").html("Querying finished !");
+                                        $('#box').click(function() {
+                                            poll("", 3, 2);
+                                            $.unblockUI();
+                                        });
+                                        break;
+                                    case "3":
+                                        $("#box p").html("Querying failed !");
+                                        break;
+                                    default:
+                                        $("#table-div").html(data);
+                                        TableAdvanced.init();
+                                        $("#box p").html("Running commands, wait please !");
+                                }
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {}
+                        });
+                    })(encoded_cmd_list, 1, 2);
+                    block.appear();
                 }
             });
         }

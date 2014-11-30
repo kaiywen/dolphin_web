@@ -90,7 +90,7 @@ request_status = {}
 request_condition = {}
 
 @csrf_exempt
-def single_cmd_view(request):
+def sel_query_view(request):
     """
         TODO (Kaiyuan)
     """
@@ -100,33 +100,39 @@ def single_cmd_view(request):
     if request.user.is_authenticated():
         request_type = int(request.POST["request_type"])
         if request_type == 1:   ## First query
-            username, password, ip = (
-                request.POST["username"], 
-                request.POST["password"],
-                request.POST["ip_addr"]
-            )
-    
             sel_request = Request(start_time=timezone.now(), status=0, detail='')
             sel_request.save()
-
             request_id = str(sel_request.id)
             request.session["rid"] = request_id
-    
-            sel_host = RequestHost(
-                ip_addr=ip, username=username, 
-                password=password, 
-                start_time=timezone.now(), 
-                request_id=sel_request.id,
-                status=0,
-                detail='')
 
-            sel_host.save()
+            request_class = int(request.POST["request_class"])  ##single-cmd or multi-cmd
+            
+            if request_class == 1:
+                username, password, ip = (
+                    request.POST["username"], 
+                    request.POST["password"],
+                    request.POST["ip_addr"]
+                )
+                sel_host = RequestHost(
+                    ip_addr=ip, username=username, 
+                    password=password, start_time=timezone.now(), 
+                    request_id=sel_request.id, status=0, detail='')
+                sel_host.save()
+            
+            elif request_class == 2:
+                cmd_string = request.POST["cmd_list"]
+                cmd_list = json.loads(cmd_string)
+                for cmd in cmd_list:
+                    sel_host = RequestHost(
+                        ip_addr=cmd["ip_addr"], username=cmd["username"], 
+                        password=cmd["password"], start_time=timezone.now(), 
+                        request_id=sel_request.id, status=0, detail='')
+                    sel_host.save()
 
             server_addr = "http://%s:%s" % (REMOTE_SERVER_IP, REMOTE_SERVER_PORT)
             dolphind_cb_url = "http://%s:%s/callback.html/" % (LOCAL_IP, LOCAL_PORT)
 
             request_condition[request_id] = threading.Semaphore(0)
-            request_status[request_id] = -1
         
             dolphind = ServerProxy(server_addr)
             dolphind.request(sel_request.id, dolphind_cb_url)
@@ -155,7 +161,7 @@ def dolphind_cb_view(request):
 
 def import_csv_view(request):
     if request.user.is_authenticated():
-        request_id = request.session["request_id"]
+        request_id = request.session["rid"]
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="sel_list.csv"'
 
