@@ -87,7 +87,7 @@ def history_view(request):
 
 
 request_status = {}
-request_condition = {}
+request_state_changed = {}
 
 @csrf_exempt
 def single_cmd_view(request):
@@ -95,8 +95,7 @@ def single_cmd_view(request):
         TODO (Kaiyuan)
     """
     global request_status
-    global request_condition
-
+    global request_state_changed
     if request.user.is_authenticated():
         username, password, ip = (
             request.POST["username"], 
@@ -124,24 +123,28 @@ def single_cmd_view(request):
         server_addr = "http://%s:%s" % (REMOTE_SERVER_IP, REMOTE_SERVER_PORT)
         dolphind_cb_url = "http://%s:%s/callback.html/" % (LOCAL_IP, LOCAL_PORT)
 
-        request_condition[sel_request.id] = threading.Condition()
-        request_status[sel_request.id] = -1
-
-        request_condition[sel_request.id].wait()
+        request_state_changed[str(sel_request.id)] = False
+        request_status[str(sel_request.id)] = -1
         
         dolphind = ServerProxy(server_addr)
         dolphind.request(sel_request.id, dolphind_cb_url)
+        
+        print request_status, str(sel_request.id), request_status[str(sel_request.id)], request_state_changed[str(sel_request.id)]
+        while request_state_changed[str(sel_request.id)] != True:
+            pass
 
-        return HttpResponse(request_status[sel_request.id])
+        return HttpResponse(request_status[str(sel_request.id)])
 
 
 @csrf_exempt
 def dolphind_cb_view(request):
     global request_status
-    global request_condition
+    global request_state_changed
+
     request_id, status = (request.GET["request_id"], request.GET["status"])
-    request_status[request_id] = status
-    request_condition[request_id].notify()
+    request_status[str(request_id)] = status
+    request_state_changed[str(request_id)] = True
+    print request_status, str(request_id), request_status[str(request_id)], request_state_changed[str(request_id)]
 
 
 def import_csv_view(request):
