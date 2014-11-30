@@ -19,7 +19,11 @@
     border-bottom: solid 1px rgb(164, 214, 216);
 }
 
-.log-detail-th {
+.log-detail-th1 {
+    width: 10%;
+}
+
+.log-detail-th2 {
     width: 20%;
 }
 

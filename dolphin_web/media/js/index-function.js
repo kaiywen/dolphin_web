@@ -95,7 +95,9 @@ var SexecForm = function() {
                             if (data == "error") {
                                 $(".alert-error span").html("incorrect username or password !");
                                 $(".alert-error").show();
-                            } else {}
+                            } else {
+                                alert(data);
+                            }
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {}
                     });
@@ -159,7 +161,9 @@ var MexecForm = function() {
                             if (data == "error") {
                                 $(".alert-error span").html("incorrect username or password !");
                                 $(".alert-error").show();
-                            } else {}
+                            } else {
+                                alert(data);
+                            }
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {}
                     });
@@ -225,30 +229,40 @@ $("#search").click(function() {
     var severity = $("#chosen-severity").val();
     var date_from = $("#date-from").val();
     var date_to = $("#date-to").val();
+    var fDate, tDate;
+    fDate = new Date(Date.parse(date_from,"yyyy-mm-dd hh:ii:ss"));
+    if(date_to != "") 
+        tDate = new Date(Date.parse(date_to,"yyyy-mm-dd hh:ii:ss"));
+    else 
+        tDate = new Date(Date.parse("3000-01-01 00:00:00","yyyy-mm-dd hh:ii:ss"));
 
     var sample_1_tb = $("#sample_1").dataTable();
     rows = sample_1_tb.fnGetNodes();
+    
     if (severity == "ALL") {
         sample_1_tb.each(function() {
             for (var i = 0; i < rows.length; i++) {
-                $(rows[i]).show();
+                var timestamp = $(rows[i]).children('td').eq(3).html();
+                var datetime = new Date(Date.parse(timestamp,"yyyy-mm-dd hh:ii:ss"));
+                if (timestamp == "" || (datetime >= fDate && datetime < tDate))
+                    $(rows[i]).show();
+                else {
+                    $(rows[i]).hide();
+                }
             }
         });
     } else {
         sample_1_tb.each(function() {
             for (var i = 0; i < rows.length; i++) {
-                if ($(rows[i]).children('td').eq(4).html() != severity)
-                    $(rows[i]).hide();
-                else
+                var timestamp = $(rows[i]).children('td').eq(3).html();
+                var datetime = new Date(Date.parse(timestamp,"yyyy-mm-dd hh:ii:ss"));
+                if ($(rows[i]).children('td').eq(5).html() == severity && timestamp != "" && 
+                    datetime >= fDate && datetime < tDate)
                     $(rows[i]).show();
+                else 
+                    $(rows[i]).hide();
             }
         });
     }
-
-    if (date_from != "") {
-        alert(date_from);
-    }
-    else if (date_to != "") {
-
-    }
+    
 });

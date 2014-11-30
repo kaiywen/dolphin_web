@@ -233,7 +233,7 @@ var FormComponents = function () {
     var handleDatetimePicker = function () {        
 
           $(".form_datetime").datetimepicker({
-              format: "yyyy-mm-dd hh:ii",
+              format: "yyyy-mm-dd hh:ii:ss",
               pickerPosition: (App.isRTL() ? "bottom-right" : "bottom-left")
           });
 

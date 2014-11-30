@@ -6,13 +6,13 @@ var TableAdvanced = function() {
         function fnFormatDetails(oTable, nTr) {
             var aData = oTable.fnGetData(nTr);
             var sOut = '<table>';
-            var sel = $.parseJSON(aData[6]);
+            var sel = $.parseJSON(aData[7]);
             var i = 0;
-            for(var key in sel) {
+            for (var key in sel) {
                 if (i % 2 == 0) {
                     sOut += '<tr>';
                 }
-                sOut += "<td class='sel-detail-td1'>" + key + 
+                sOut += "<td class='sel-detail-td1'>" + key +
                     ":</td><td class='sel-detail-td2'>" + sel[key] + '</td>';
                 if (i % 2 == 1) {
                     sOut += '</tr>';
@@ -57,7 +57,7 @@ var TableAdvanced = function() {
             "iDisplayLength": 10,
         });
 
-       /* jQuery('#sample_1_wrapper .dataTables_filter input').addClass("m-wrap small"); // modify table search input*/
+        /* jQuery('#sample_1_wrapper .dataTables_filter input').addClass("m-wrap small"); // modify table search input*/
         jQuery('#sample_1_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
         jQuery('#sample_1_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
 
@@ -78,6 +78,34 @@ var TableAdvanced = function() {
             }
         });
     };
+    
+    var initTable2 = function() {
+        var oTable = $('#sample_2').dataTable({
+            "aoColumnDefs": [{
+                "aTargets": [0]
+            }],
+            "aaSorting": [
+                [1, 'asc']
+            ],
+            "aLengthMenu": [
+                [5, 15, 20, -1],
+                [5, 15, 20, "All"] // change per page values here
+            ],
+            // set the initial value
+            "iDisplayLength": 10,
+        });
+
+        jQuery('#sample_2_wrapper .dataTables_filter input').addClass("m-wrap small"); // modify table search input
+        jQuery('#sample_2_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+        jQuery('#sample_2_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
+        $('#sample_2_column_toggler input[type="checkbox"]').change(function() {
+            /* Get the DataTables object again - this is not a recreation, just a get of the object */
+            var iCol = parseInt($(this).attr("data-column"));
+            var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+            oTable.fnSetColumnVis(iCol, (bVis ? false : true));
+        });
+    }
 
     return {
 
@@ -89,6 +117,7 @@ var TableAdvanced = function() {
             }
 
             initTable1();
+            initTable2();
         }
 
     };
