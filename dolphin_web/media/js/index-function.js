@@ -82,7 +82,7 @@ var SexecForm = function() {
                     var username = $("#s_username").val();
                     var password = $("#s_password").val();
                     var ip_addr = $("#s_input_ipv4").val();
-                    (function poll(un="", pw="", ip="", rt=2){
+                    (function poll(un = "", pw = "", ip = "", rt = 2) {
                         $.ajax({
                             type: 'POST',
                             url: "/single_cmd.html/",
@@ -100,21 +100,22 @@ var SexecForm = function() {
                                         $(".alert-error").show();
                                         break;
                                     case "1":
-                                        $("#box p" ).html(" Running commands, wait please!");
+                                        $("#box p").html(" Running commands, wait please!");
                                         poll();
                                         break;
                                     case "2":
-                                        $("#box p" ).html(" Querying finished !");
-                                        $('#box').click(
-                                            poll(un="", pw="", ip="", rt=3);
-                                        );
+                                        $("#box p").html(" Querying finished !");
+                                        $('#box').click(function() {
+                                            poll(un = "", pw = "", ip = "", rt = 3);
+                                            $.unblockUI();
+                                        });
                                         break;
                                     case "3":
-                                        $("#box p" ).html(" Querying failed !");
+                                        $("#box p").html(" Querying failed !");
                                         break;
                                     default:
-                                        $("#sel_table").html(data);
-                                        $.blockUI;
+                                        $("#table-div").html(data);
+                                        TableAdvanced.init();
                                 }
                             },
                             error: function(XMLHttpRequest, textStatus, errorThrown) {}
@@ -178,6 +179,29 @@ var MexecForm = function() {
                             "cmd_list": encoded_cmd_list
                         },
                         success: function(data, textStatus) {
+                            switch (data) {
+                                case "error":
+                                    $(".alert-error span").html("incorrect username or password !");
+                                    $(".alert-error").show();
+                                    break;
+                                case "1":
+                                    $("#box p").html(" Running commands, wait please!");
+                                    poll();
+                                    break;
+                                case "2":
+                                    $("#box p").html(" Querying finished !");
+                                    $('#box').click(function() {
+                                        poll(un = "", pw = "", ip = "", rt = 3);
+                                        $.unblockUI();
+                                    });
+                                    break;
+                                case "3":
+                                    $("#box p").html(" Querying failed !");
+                                    break;
+                                default:
+                                    $("#table-div").html(data);
+                                    TableAdvanced.init();
+                            }
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {}
                     });
@@ -243,20 +267,20 @@ $("#search").click(function() {
     var date_from = $("#date-from").val();
     var date_to = $("#date-to").val();
     var fDate, tDate;
-    fDate = new Date(Date.parse(date_from,"yyyy-mm-dd hh:ii:ss"));
-    if(date_to != "") 
-        tDate = new Date(Date.parse(date_to,"yyyy-mm-dd hh:ii:ss"));
-    else 
-        tDate = new Date(Date.parse("3000-01-01 00:00:00","yyyy-mm-dd hh:ii:ss"));
+    fDate = new Date(Date.parse(date_from, "yyyy-mm-dd hh:ii:ss"));
+    if (date_to != "")
+        tDate = new Date(Date.parse(date_to, "yyyy-mm-dd hh:ii:ss"));
+    else
+        tDate = new Date(Date.parse("3000-01-01 00:00:00", "yyyy-mm-dd hh:ii:ss"));
 
     var sample_1_tb = $("#sample_1").dataTable();
     rows = sample_1_tb.fnGetNodes();
-    
+
     if (severity == "ALL") {
         sample_1_tb.each(function() {
             for (var i = 0; i < rows.length; i++) {
                 var timestamp = $(rows[i]).children('td').eq(3).html();
-                var datetime = new Date(Date.parse(timestamp,"yyyy-mm-dd hh:ii:ss"));
+                var datetime = new Date(Date.parse(timestamp, "yyyy-mm-dd hh:ii:ss"));
                 if (timestamp == "" || (datetime >= fDate && datetime < tDate))
                     $(rows[i]).show();
                 else {
@@ -268,14 +292,14 @@ $("#search").click(function() {
         sample_1_tb.each(function() {
             for (var i = 0; i < rows.length; i++) {
                 var timestamp = $(rows[i]).children('td').eq(3).html();
-                var datetime = new Date(Date.parse(timestamp,"yyyy-mm-dd hh:ii:ss"));
-                if ($(rows[i]).children('td').eq(5).html() == severity && timestamp != "" && 
+                var datetime = new Date(Date.parse(timestamp, "yyyy-mm-dd hh:ii:ss"));
+                if ($(rows[i]).children('td').eq(5).html() == severity && timestamp != "" &&
                     datetime >= fDate && datetime < tDate)
                     $(rows[i]).show();
-                else 
+                else
                     $(rows[i]).hide();
             }
         });
     }
-    
+
 });

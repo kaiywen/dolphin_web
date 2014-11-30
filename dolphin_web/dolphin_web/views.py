@@ -34,9 +34,9 @@ def index_view(request):
         Corresponding URL : (ip:port/index.html)
     """
     if request.user.is_authenticated():
-        # ipmi_entry_list = Info.objects.all()
-        # request.session["request_id"] = 1 
-        # return render_to_response('index.html', {'ipmi_entry_list': ipmi_entry_list})
+        ipmi_entry_list = Info.objects.all()
+        request.session["request_id"] = 1 
+        return render_to_response('index.html', {'ipmi_entry_list': ipmi_entry_list})
         return render_to_response('index.html')
     else:
         return HttpResponseRedirect('/')
@@ -99,7 +99,6 @@ def single_cmd_view(request):
 
     if request.user.is_authenticated():
         request_type = int(request.POST["request_type"])
-        request_id = ""
         if request_type == 1:   ## First query
             username, password, ip = (
                 request.POST["username"], 
@@ -131,12 +130,18 @@ def single_cmd_view(request):
         
             dolphind = ServerProxy(server_addr)
             dolphind.request(sel_request.id, dolphind_cb_url)
+            request_condition[request_id].acquire()
+            return HttpResponse(request_status[request_id])
 
         elif request_type == 2:
             request_id = str(request.session["rid"])
+            request_condition[request_id].acquire()
+            return HttpResponse(request_status[request_id])
 
-        request_condition[request_id].acquire()
-        return HttpResponse(request_status[request_id])
+        elif request_type == 3:
+            request_id = str(request.session["rid"])
+            ipmi_entry_list = Info.objects.filter(request_id=request_id)
+            return render_to_response('sel_table.html', {'ipmi_entry_list': ipmi_entry_list})
 
 
 @csrf_exempt
@@ -156,7 +161,7 @@ def import_csv_view(request):
 
         writer = csv.writer(response)
 
-        ipmi_entry_list = Info.objects.all()
+        ipmi_entry_list = Info.objects.filter(request_id=request_id)
         for entry in ipmi_entry_list:
             print entry.sel_info
             details = json.loads(entry.sel_info)
