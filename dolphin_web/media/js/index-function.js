@@ -5,7 +5,6 @@ var block = function() {
         appear: function() {
             $.blockUI({
                 message: $('#box'),
-                applyPlatformOpacityRules: false,
                 css: {
                     top: '23%',
                     left: '40%',
@@ -52,172 +51,158 @@ jQuery.validator.setDefaults({
     },
 });
 
-var SexecForm = function() {
-    return {
-        init: function() {
-            $('#s-exec-form').validate({
-                rules: {
-                    s_username: {
-                        required: true
-                    },
-                    s_password: {
-                        required: true
-                    },
-                    s_input_ipv4: {
-                        ip: true
-                    }
-                },
-                messages: {
-                    s_username: {
-                        required: "Username is required."
-                    },
-                    s_password: {
-                        required: "Password is required."
-                    },
-                    s_input_ipv4: {
-                        ip: "A valid IP is required."
-                    }
-                },
-                submitHandler: function(form) {
-                    var username = $("#s_username").val();
-                    var password = $("#s_password").val();
-                    var ip_addr = $("#s_input_ipv4").val();
-                    (function poll(un = "", pw = "", ip = "", rt = 1, rc = 1) {
-                        $.ajax({
-                            type: 'POST',
-                            url: "/sel_query.html/",
-                            cache: false,
-                            data: {
-                                "username": un,
-                                "password": pw,
-                                "ip_addr": ip,
-                                "request_type": rt,
-                                "request_class": rc
-                            },
-                            success: function(data, textStatus) {
-                                switch (data) {
-                                    case "error":
-                                        $(".alert-error span").html("incorrect username or password !");
-                                        $(".alert-error").show();
-                                        break;
-                                    case "1":
-                                        $("#box p").html(" Running commands, wait please!");
-                                        poll("", "", "", 2, 1);
-                                        break;
-                                    case "2":
-                                        $("#box p").html(" Querying finished !");
-                                        $('#box').click(function() {
-                                            poll("", "", "", 3, 1);
-                                            $.unblockUI();
-                                        });
-                                        break;
-                                    case "3":
-                                        $("#box p").html(" Querying failed !");
-                                        break;
-                                    default:
-                                        $("#table-div").html(data);
-                                        TableAdvanced.init();
-                                }
-                            },
-                            error: function(XMLHttpRequest, textStatus, errorThrown) {}
-                        });
-                    })(username, password, ip_addr, 1, 1);
-                    block.appear();
-                }
-            });
-        }
-    };
-}();
-
 var passwd_array = [];
-var MexecForm = function() {
 
-    return {
-        init: function() {
-            $('#m-exec-form').validate({
-                rules: {
-                    m_username: {
-                        required: true
-                    },
-                    m_password: {
-                        required: true
-                    },
-                    m_input_ipv4: {
-                        ip: true
+$("#s_exec_ipmi").click(function() {
+    var form = $('#s-exec-form');
+    form.validate({
+        rules: {
+            s_username: {
+                required: true
+            },
+            s_password: {
+                required: true
+            },
+            s_input_ipv4: {
+                ip: true
+            }
+        },
+        messages: {
+            s_username: {
+                required: "Username is required."
+            },
+            s_password: {
+                required: "Password is required."
+            },
+            s_input_ipv4: {
+                ip: "A valid IP is required."
+            }
+        }
+    });
+    if (form.valid()) {
+        var username = $("#s_username").val();
+        var password = $("#s_password").val();
+        var ip_addr = $("#s_input_ipv4").val();
+        (function poll(un, pw, ip, rt, rc){
+            $.ajax({
+                type: 'POST',
+                url: "/sel_query.html/",
+                cache: false,
+                data: {
+                    "username": un,
+                    "password": pw,
+                    "ip_addr": ip,
+                    "request_type": rt,
+                    "request_class": rc
+                },
+                success: function(data, textStatus) {
+                    switch (data) {
+                        case "error":
+                            $(".alert-error span").html("incorrect username or password !");
+                            $(".alert-error").show();
+                            break;
+                        case "1":
+                            $("#box p").html(" Running commands, wait please!");
+                            poll("", "", "", 2, 1);
+                            break;
+                        case "2":
+                            $("#box p").html(" Querying finished !");
+                            $('#box').click(function() {
+                                poll("", "", "", 3, 1);
+                            });
+                            break;
+                        case "3":
+                            $("#box p").html(" Querying failed !");
+                            $('#box').click(function() {
+                                $.unblockUI();
+                                $("#box p").html("Running commands, wait please !");
+                            });
+                            break;
+                        default:
+                            $("#table-div").html(data);
+                            TableAdvanced.init();
+                            $.unblockUI();
+                            $("#box p").html("Running commands, wait please !");
                     }
                 },
-                messages: {
-                    m_username: {
-                        required: "Username is required."
-                    },
-                    m_password: {
-                        required: "Password is required."
-                    },
-                    m_input_ipv4: {
-                        ip: "A valid IP is required."
-                    }
-                },
-                submitHandler: function(form) {
-                    var cmd_ul = $("ul#cmd");
-                    var cmd_list = [];
-                    var index = 0;
-                    cmd_ul.children("li").each(function() {
-                        var li_var = $(this).text();
-                        var cmd_info = li_var.split(" ");
-                        var cmd = {
-                            "username": cmd_info[0],
-                            "ip_addr": cmd_info[1],
-                            "password": passwd_array[$(this).index()]
-                        }
-                        cmd_list.push(cmd);
-                    });
-                    var encoded_cmd_list = $.toJSON(cmd_list);
-
-                    (function poll(cmd = "", rt = 1, rc = 2) {
-                        $.ajax({
-                            type: 'POST',
-                            url: "/sel_query.html/",
-                            cache: false,
-                            data: {
-                                "cmd_list": cmd,
-                                "request_type": rt,
-                                "request_class": rc
-                            },
-                            success: function(data, textStatus) {
-                                switch (data) {
-                                    case "error":
-                                        $(".alert-error span").html("incorrect username or password !");
-                                        $(".alert-error").show();
-                                        break;
-                                    case "1":
-                                        $("#box p").html("Running commands, wait please !");
-                                        poll("", 2, 2);
-                                        break;
-                                    case "2":
-                                        $("#box p").html("Querying finished !");
-                                        $('#box').click(function() {
-                                            poll("", 3, 2);
-                                            $.unblockUI();
-                                        });
-                                        break;
-                                    case "3":
-                                        $("#box p").html("Querying failed !");
-                                        break;
-                                    default:
-                                        $("#table-div").html(data);
-                                        TableAdvanced.init();
-                                        $("#box p").html("Running commands, wait please !");
-                                }
-                            },
-                            error: function(XMLHttpRequest, textStatus, errorThrown) {}
-                        });
-                    })(encoded_cmd_list, 1, 2);
-                    block.appear();
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $.unblockUI();
                 }
             });
-        }
-    };
-}();
+        })(username, password, ip_addr, 1, 1);
+        block.appear();
+    }
+
+});
+
+$("#m_exec_ipmi").click(function() {
+    var cmd_ul = $("ul#cmd");
+    if (cmd_ul.children().length) {
+        var cmd_list = [];
+        var index = 0;
+        cmd_ul.children("li").each(function() {
+            var li_var = $(this).text();
+            var cmd_info = li_var.split(" ");
+            var cmd = {
+                "username": cmd_info[0],
+                "ip_addr": cmd_info[1],
+                "password": passwd_array[$(this).index()]
+            }
+            cmd_list.push(cmd);
+        });
+        var encoded_cmd_list = $.toJSON(cmd_list);
+
+        (function poll(cmd, rt, rc){
+            $.ajax({
+                type: 'POST',
+                url: "/sel_query.html/",
+                cache: false,
+                data: {
+                    "cmd_list": cmd,
+                    "request_type": rt,
+                    "request_class": rc
+                },
+                success: function(data, textStatus) {
+                    switch (data) {
+                        case "error":
+                            $(".alert-error span").html("incorrect username or password !");
+                            $(".alert-error").show();
+                            break;
+                        case "1":
+                            $("#box p").html("Running commands, wait please !");
+                            poll("", 2, 2);
+                            break;
+                        case "2":
+                            $("#box p").html("Querying finished !");
+                            $('#box').click(function() {
+                                poll("", 3, 2);
+                            });
+                            break;
+                        case "3":
+                            $("#box p").html("Querying failed !");
+                            $('#box').click(function() {
+                                $.unblockUI();
+                                $("#box p").html("Running commands, wait please !");
+                            });
+                            break;
+                        default:
+                            $("#table-div").html(data);
+                            TableAdvanced.init();
+                            $.unblockUI();
+                            $("#box p").html("Running commands, wait please !");
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $.unblockUI();
+                }
+            });
+        })(encoded_cmd_list, 1, 2);
+        block.appear();
+    }
+    else {
+        $("#multi-cmd-label").show();
+    }
+});
 
 $("#m_exec_add").click(function() {
     var form = $('#m-exec-form');
@@ -243,9 +228,10 @@ $("#m_exec_add").click(function() {
             m_input_ipv4: {
                 ip: "A valid IP is required."
             }
-        },
+        }
     });
     if (form.valid()) {
+        $("#multi-cmd-label").hide();
         var username = $("#m_username").val();
         var password = $("#m_password").val();
         var ip_addr = $("#m_input_ipv4").val();

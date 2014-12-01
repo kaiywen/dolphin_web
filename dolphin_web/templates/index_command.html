@@ -70,7 +70,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <button type="submit" class="btn green" id="s_exec_ipmi">
+                                            <button type="button" class="btn green" id="s_exec_ipmi">
                                                 exec_ipmi
                                             </button>
                                         </td>
@@ -89,6 +89,25 @@
                                         <td>
                                             <table class="table table-striped table-hover">
                                                 <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="table-text">IP address:</label>
+                                                        </td>
+                                                        <td>
+                                                            <div class="control-group">
+                                                                <div class="controls">
+                                                                    <div class="input-icon left">
+                                                                        <input class="m-wrap input-ipv4" id="m_input_ipv4" name="m_input_ipv4" type="text" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn green" id="m_exec_add">
+                                                                add_cmd
+                                                            </button>
+                                                        </td>
+                                                    </tr>
                                                     <tr>
                                                         <td>
                                                             <label class="table-text">Username:</label>
@@ -112,9 +131,10 @@
 
                                                             </div>
                                                         </td>
+
                                                         <td>
-                                                            <button type="button" class="btn green" id="m_exec_add">
-                                                                add_cmd
+                                                            <button type="button" class="btn green" id="m_exec_del">
+                                                                del_cmd
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -141,27 +161,9 @@
 
                                                             </div>
                                                         </td>
+
                                                         <td>
-                                                            <button type="button" class="btn green" id="m_exec_del">
-                                                                del_cmd
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <label class="table-text">IP address:</label>
-                                                        </td>
-                                                        <td>
-                                                            <div class="control-group">
-                                                                <div class="controls">
-                                                                    <div class="input-icon left">
-                                                                        <input class="m-wrap input-ipv4" id="m_input_ipv4" name="m_input_ipv4" type="text" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <button type="submit" class="btn green" id="m_exec_ipmi">
+                                                            <button type="button" class="btn green" id="m_exec_ipmi">
                                                                 exec_ipmi
                                                             </button>
                                                         </td>
@@ -175,6 +177,7 @@
                                                 <div class="controls">
                                                     <ul class="cmd-list" id="cmd">
                                                     </ul>
+                                                    <label id="multi-cmd-label">You must add at least one command first!</label>
                                                 </div>
                                             </div>
                                         </td>

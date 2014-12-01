@@ -34,9 +34,6 @@ def index_view(request):
         Corresponding URL : (ip:port/index.html)
     """
     if request.user.is_authenticated():
-        ipmi_entry_list = Info.objects.all()
-        request.session["request_id"] = 1 
-        return render_to_response('index.html', {'ipmi_entry_list': ipmi_entry_list})
         return render_to_response('index.html')
     else:
         return HttpResponseRedirect('/')
@@ -161,16 +158,17 @@ def dolphind_cb_view(request):
 
 def import_csv_view(request):
     if request.user.is_authenticated():
-        request_id = request.session["rid"]
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="sel_list.csv"'
+        if "rid" in request.session:
+            request_id = request.session["rid"]
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="sel_list.csv"'
 
-        writer = csv.writer(response)
+            writer = csv.writer(response)
 
-        ipmi_entry_list = Info.objects.filter(request_id=request_id)
-        for entry in ipmi_entry_list:
-            print entry.sel_info
-            details = json.loads(entry.sel_info)
-            row = [ details[key] for key in details ]
-            writer.writerow(row)
-        return response
+            ipmi_entry_list = Info.objects.filter(request_id=request_id)
+            for entry in ipmi_entry_list:
+                print entry.sel_info
+                details = json.loads(entry.sel_info)
+                row = [ details[key] for key in details ]
+                writer.writerow(row)
+            return response
