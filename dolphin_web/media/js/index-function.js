@@ -258,7 +258,7 @@ $("#m-exec-del").click(function() {
 });
 
 $("#search").click(function() {
-    var severity = $("#chosen-severity").val();
+/*    var severity = $("#chosen-severity").val();
     var level = $("#chosen-level").val();
     var date_from = $("#date-from").val();
     var date_to = $("#date-to").val();
@@ -286,7 +286,9 @@ $("#search").click(function() {
             else
                 $(rows[i]).hide();
         }
-    });
+    });*/
+    var sample_1_tb = $("#sample_1").DataTable();
+    sample_1_tb.draw();
 });
 
 
@@ -299,8 +301,7 @@ $("#reload-history").click(function() {
             $("#his-table-div").html(data);
             TableAdvanced.init();
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-        }
+        error: function(XMLHttpRequest, textStatus, errorThrown) {}
     });
 });
 
@@ -309,4 +310,3 @@ $(".his-more").live("click", function() {
     var href = '/cmd_detail.html/?rid=' + request_id;
     $(this).attr('href', href);
 });
-

@@ -89,9 +89,12 @@ request_condition = {}
 
 @csrf_exempt
 def sel_query_view(request):
+
     """
-        TODO (Kaiyuan)
+        Return the sel list
+        Corresponding URL : (ip:port/sel_query.html)
     """
+
     global request_status
     global request_condition
 
@@ -142,10 +145,12 @@ def sel_query_view(request):
             request_condition[request_id].acquire()
             return HttpResponse(request_status[request_id])
 
-        elif request_type == 3:
+        else:
             request_id = str(request.session["rid"])
             ipmi_entry_list = Info.objects.filter(request_id=request_id)
             return render_to_response('index_table.html', {'ipmi_entry_list': ipmi_entry_list})
+    else:
+        return HttpResponseRedirect('/')
 
 
 @csrf_exempt
@@ -167,26 +172,29 @@ def dolphind_cb_view(request):
 
 def export_csv_view(request):
     if request.user.is_authenticated():
-        if "rid" in request.session:
-            request_id = request.session["rid"]
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename="sel_list.csv"'
+        request_id = request.session["rid"]
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="sel_list.csv"'
 
-            writer = csv.writer(response)
+        writer = csv.writer(response)
 
-            ipmi_entry_list = Info.objects.filter(request_id=request_id)
-            for entry in ipmi_entry_list:
-                print entry.sel_info
-                details = json.loads(entry.sel_info)
-                row = [ details[key] for key in details ]
-                writer.writerow(row)
-            return response
+        ipmi_entry_list = Info.objects.filter(request_id=request_id)
+        for entry in ipmi_entry_list:
+            print entry.sel_info
+            details = json.loads(entry.sel_info)
+            row = [ details[key] for key in details ]
+            writer.writerow(row)
+        return response
+    else:
+        return HttpResponseRedirect('/')
 
 @csrf_exempt
 def reload_history_view(request):
     if request.user.is_authenticated():
         cmd_his_list = Request.objects.all()
         return render_to_response('hist_table.html', {'cmd_his_list': cmd_his_list})
+    else:
+        return HttpResponseRedirect('/')
 
 
 @csrf_exempt
@@ -199,6 +207,8 @@ def cmd_detail_view(request):
             ipmi_entry_list = Info.objects.filter(request_id=request_id)
             return render_to_response('hist_details.html', {'request_host_list': request_host_list,
                 'cmd_id' : request_id, 'ipmi_entry_list': ipmi_entry_list})
+    else:
+        return HttpResponseRedirect('/')
 
 
 def export_csv2_view(request):
@@ -217,3 +227,5 @@ def export_csv2_view(request):
                 row = [ details[key] for key in details ]
                 writer.writerow(row)
             return response
+    else:
+        return HttpResponseRedirect('/')

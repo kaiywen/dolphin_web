@@ -62,6 +62,28 @@ jQuery(document).ready(function() {
     App.init();
     FormComponents.init();
     TableAdvanced.init();
+    $.fn.dataTableExt.afnFiltering.push(function (oSettings, aData, iDataIndex) {
+        if ($(oSettings.nTable).hasClass('do-exclude-filtering')) {     
+            var timestamp = aData[3];
+            var row_level = aData[5];
+            var row_sever = aData[6];
+            var datetime = new Date(Date.parse(timestamp, "yyyy-mm-dd hh:ii:ss"));
+            var severity = $("#chosen-severity").val();
+            var level = $("#chosen-level").val();
+            var date_from = $("#date-from").val();
+            var date_to = $("#date-to").val();
+            var fDate, tDate;
+            fDate = new Date(Date.parse(date_from, "yyyy-mm-dd hh:ii:ss"));
+            if (date_to != "")
+                tDate = new Date(Date.parse(date_to, "yyyy-mm-dd hh:ii:ss"));
+            else
+                tDate = new Date(Date.parse("3000-01-01 00:00:00", "yyyy-mm-dd hh:ii:ss"));
+            return ((timestamp == "" || (datetime >= fDate && datetime < tDate)) &&
+                (severity == "ALL" || (row_sever == severity)) &&
+                (level == "ALL" || (row_level == level)))
+        }
+        else return true;
+    });
 });
 
 </script>
