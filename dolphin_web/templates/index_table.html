@@ -7,9 +7,10 @@
             <div class="caption"><i class="icon-globe"></i>Log Details</div>
             <div class="actions">
                 <div class="btn-group">
-                    <button type="button" class="btn green" id="export-csv">
-                        Export CSV
-                    </button>
+                    <a class="btn green" href="/export_csv.html/" id="export-csv">
+                    <i class="icon-download"></i>    
+                    <span>Export CSV</span>
+                    </a>
                 </div>
 
             </div>
@@ -24,7 +25,8 @@
                         <th class="log-detail-th1">Type</th>
                         <th class="log-detail-th2">Timestamp</th>
                         <th class="log-detail-th2">Host</th>
-                        <th class="log-detail-th2">Level</th>
+                        <th class="log-detail-th3">Level</th>
+                        <th class="log-detail-th3">Severity</th>
                         <th class="log-detail-th2">Description</th>
                         <th class="th-hidden">Details</th>
                     </tr>
@@ -41,8 +43,10 @@
                         <td>{{ ipmi_entry.sel_timestamp | date:"Y-m-d H:i:s" }}</td>
 
                         <td>{{ ipmi_entry.host.ip_addr }}</td>
-
+                        
                         <td>{{ ipmi_entry.sel_level }}</td>
+                        
+                        <td>{{ ipmi_entry.sel_severity }}</td>
 
                         <td>{{ ipmi_entry.sel_desc }}</td>
 

@@ -53,7 +53,7 @@ jQuery.validator.setDefaults({
 
 var passwd_array = [];
 
-$("#s_exec_ipmi").click(function() {
+$("#s-exec-ipmi").click(function() {
     var form = $('#s-exec-form');
     form.validate({
         rules: {
@@ -83,7 +83,7 @@ $("#s_exec_ipmi").click(function() {
         var username = $("#s_username").val();
         var password = $("#s_password").val();
         var ip_addr = $("#s_input_ipv4").val();
-        (function poll(un, pw, ip, rt, rc){
+        (function poll(un, pw, ip, rt, rc) {
             $.ajax({
                 type: 'POST',
                 url: "/sel_query.html/",
@@ -115,18 +115,19 @@ $("#s_exec_ipmi").click(function() {
                             $("#box p").html(" Querying failed !");
                             $('#box').click(function() {
                                 $.unblockUI();
-                                $("#box p").html("Running commands, wait please !");
+                                $("#export-csv").hide();
                             });
                             break;
                         default:
                             $("#table-div").html(data);
                             TableAdvanced.init();
+                            $("#export-csv").show();
                             $.unblockUI();
-                            $("#box p").html("Running commands, wait please !");
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     $.unblockUI();
+                    $("#export-csv").hide();
                 }
             });
         })(username, password, ip_addr, 1, 1);
@@ -135,7 +136,7 @@ $("#s_exec_ipmi").click(function() {
 
 });
 
-$("#m_exec_ipmi").click(function() {
+$("#m-exec-ipmi").click(function() {
     var cmd_ul = $("ul#cmd");
     if (cmd_ul.children().length) {
         var cmd_list = [];
@@ -152,7 +153,7 @@ $("#m_exec_ipmi").click(function() {
         });
         var encoded_cmd_list = $.toJSON(cmd_list);
 
-        (function poll(cmd, rt, rc){
+        (function poll(cmd, rt, rc) {
             $.ajax({
                 type: 'POST',
                 url: "/sel_query.html/",
@@ -182,29 +183,29 @@ $("#m_exec_ipmi").click(function() {
                             $("#box p").html("Querying failed !");
                             $('#box').click(function() {
                                 $.unblockUI();
-                                $("#box p").html("Running commands, wait please !");
+                                $("#export-csv").hide();
                             });
                             break;
                         default:
                             $("#table-div").html(data);
                             TableAdvanced.init();
+                            $("#export-csv").show();
                             $.unblockUI();
-                            $("#box p").html("Running commands, wait please !");
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     $.unblockUI();
+                    $("#export-csv").hide();
                 }
             });
         })(encoded_cmd_list, 1, 2);
         block.appear();
-    }
-    else {
+    } else {
         $("#multi-cmd-label").show();
     }
 });
 
-$("#m_exec_add").click(function() {
+$("#m-exec-add").click(function() {
     var form = $('#m-exec-form');
     form.validate({
         rules: {
@@ -248,7 +249,7 @@ $('li.li-selectable').live('click', function() {
     $(this).siblings().removeClass("li-cmd-selected");
 });
 
-$("#m_exec_del").click(function() {
+$("#m-exec-del").click(function() {
     var index = $("li.li-cmd-selected").index();
     if (index != -1) {
         $("li.li-cmd-selected").remove();
@@ -258,6 +259,7 @@ $("#m_exec_del").click(function() {
 
 $("#search").click(function() {
     var severity = $("#chosen-severity").val();
+    var level = $("#chosen-level").val();
     var date_from = $("#date-from").val();
     var date_to = $("#date-to").val();
     var fDate, tDate;
@@ -270,30 +272,39 @@ $("#search").click(function() {
     var sample_1_tb = $("#sample_1").dataTable();
     rows = sample_1_tb.fnGetNodes();
 
-    if (severity == "ALL") {
-        sample_1_tb.each(function() {
-            for (var i = 0; i < rows.length; i++) {
-                var timestamp = $(rows[i]).children('td').eq(3).html();
-                var datetime = new Date(Date.parse(timestamp, "yyyy-mm-dd hh:ii:ss"));
-                if (timestamp == "" || (datetime >= fDate && datetime < tDate))
-                    $(rows[i]).show();
-                else {
-                    $(rows[i]).hide();
-                }
-            }
-        });
-    } else {
-        sample_1_tb.each(function() {
-            for (var i = 0; i < rows.length; i++) {
-                var timestamp = $(rows[i]).children('td').eq(3).html();
-                var datetime = new Date(Date.parse(timestamp, "yyyy-mm-dd hh:ii:ss"));
-                if ($(rows[i]).children('td').eq(5).html() == severity && timestamp != "" &&
-                    datetime >= fDate && datetime < tDate)
-                    $(rows[i]).show();
-                else
-                    $(rows[i]).hide();
-            }
-        });
-    }
+    sample_1_tb.each(function() {
+        for (var i = 0; i < rows.length; i++) {
+            var timestamp = $(rows[i]).children('td').eq(3).html();
+            var row_level = $(rows[i]).children('td').eq(5).html();
+            var row_sever = $(rows[i]).children('td').eq(6).html();
+            var datetime = new Date(Date.parse(timestamp, "yyyy-mm-dd hh:ii:ss"));
 
+            if ((timestamp == "" || (datetime >= fDate && datetime < tDate)) &&
+                (severity == "ALL" || (row_sever == severity)) &&
+                (level == "ALL" || (row_level == level)))
+                $(rows[i]).show();
+            else
+                $(rows[i]).hide();
+        }
+    });
 });
+
+
+$("#reload-history").click(function() {
+    $.ajax({
+        type: 'GET',
+        url: "/reload_history.html/",
+        cache: false,
+        success: function(data, textStatus) {
+            $("#his-table-div").html(data);
+            TableAdvanced.init();
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        }
+    });
+});
+
+$(".his-more").click(function() {
+    alert($(this).parents("tr").children('td').eq(0).html());
+});
+

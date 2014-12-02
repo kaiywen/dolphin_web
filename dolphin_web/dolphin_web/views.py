@@ -78,7 +78,8 @@ def history_view(request):
         Corresponding URL : (ip:port/history.html)
     """
     if request.user.is_authenticated():
-        return render_to_response('history.html')
+        cmd_his_list = Request.objects.all()
+        return render_to_response('history.html', {'cmd_his_list': cmd_his_list})
     else:
         return HttpResponseRedirect('/')
 
@@ -151,12 +152,20 @@ def sel_query_view(request):
 def dolphind_cb_view(request):
     global request_status
     global request_condition
-    request_id, status = (str(request.GET["request_id"]), request.GET["status"])
-    request_status[request_id] = status
+    request_id, status, succ_counter = (str(request.GET["request_id"]), 
+                                        int(request.GET["status"]),
+                                        int(request.GET["success_count"]))
+    if status == 2:
+        if succ_counter != 0:
+            request_status[request_id] = status
+        else:
+            request_status[request_id] = 3
+    else:
+        request_status[request_id] = status
     request_condition[request_id].release()
 
 
-def import_csv_view(request):
+def export_csv_view(request):
     if request.user.is_authenticated():
         if "rid" in request.session:
             request_id = request.session["rid"]
@@ -172,3 +181,9 @@ def import_csv_view(request):
                 row = [ details[key] for key in details ]
                 writer.writerow(row)
             return response
+
+@csrf_exempt
+def reload_history_view(request):
+    if request.user.is_authenticated():
+        cmd_his_list = Request.objects.all()
+        return render_to_response('cmd_table.html', {'cmd_his_list': cmd_his_list})

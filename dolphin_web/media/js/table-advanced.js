@@ -6,7 +6,7 @@ var TableAdvanced = function() {
         function fnFormatDetails(oTable, nTr) {
             var aData = oTable.fnGetData(nTr);
             var sOut = '<table>';
-            var sel = $.parseJSON(aData[7]);
+            var sel = $.parseJSON(aData[8]);
             var i = 0;
             for (var key in sel) {
                 if (i % 2 == 0) {
@@ -85,7 +85,7 @@ var TableAdvanced = function() {
                 "aTargets": [0]
             }],
             "aaSorting": [
-                [1, 'asc']
+                [0, 'desc']
             ],
             "aLengthMenu": [
                 [5, 15, 20, -1],

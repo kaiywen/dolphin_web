@@ -5,7 +5,8 @@
             <th class="log-detail-th1">Type</th>
             <th class="log-detail-th2">Timestamp</th>
             <th class="log-detail-th2">Host</th>
-            <th class="log-detail-th2">Level</th>
+            <th class="log-detail-th3">Level</th>
+            <th class="log-detail-th3">Severity</th>
             <th class="log-detail-th2">Description</th>
             <th class="th-hidden">Details</th>
         </tr>
@@ -24,6 +25,8 @@
             <td>{{ ipmi_entry.host.ip_addr }}</td>
 
             <td>{{ ipmi_entry.sel_level }}</td>
+            
+            <td>{{ ipmi_entry.sel_severity }}</td>
 
             <td>{{ ipmi_entry.sel_desc }}</td>
 

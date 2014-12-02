@@ -15,6 +15,7 @@ urlpatterns = patterns('dolphin_web.views',
     url(r'^history.html/$', 'history_view'),
     url(r'^sel_query.html/$', 'sel_query_view'),
     url(r'^callback.html/$', 'dolphind_cb_view'),
-    url(r'^import_csv.html/$', 'import_csv_view')
+    url(r'^export_csv.html/$', 'export_csv_view'),
+    url(r'^reload_history.html/$', 'reload_history_view')
 )
 

@@ -15,12 +15,12 @@
     border-bottom: solid 1px rgb(164, 214, 216);
 }
 
-.log-detail-th1 {
-    width: 10%;
+.log-detail-th1, .log-detail-th3 {
+    width: 12%;
 }
 
 .log-detail-th2 {
-    width: 20%;
+    width: 17%;
 }
 
 .sel-detail-td1 {
@@ -33,7 +33,7 @@
 
 .loading_text {
     color: white;
-    font-size: 30px;
+    font-size: 24px;
 }
 
 .cmd-td {
@@ -48,6 +48,26 @@
     padding: 0;
     overflow: auto;
     height: 170px;
+}
+
+p.failed {
+    color:red;
+}
+
+p.running {
+    color:green;
+}
+
+p.none {
+    color:blue;
+}
+
+#his-more {
+    height:10px;
+}
+
+#export-csv {
+    display: none;
 }
 
 #multi-cmd-label {
