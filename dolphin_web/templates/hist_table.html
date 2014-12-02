@@ -1,110 +1,69 @@
-<div class="span12">
+<table class="table table-striped table-bordered table-hover table-full-width" id="sample_2">
 
-    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+    <thead>
 
-    <div class="portlet box blue">
+        <tr>
 
-        <div class="portlet-title">
+            <th>ID</th>
 
-            <div class="caption"><i class="icon-reorder"></i>Cmd History Table</div>
-            <div class="actions">
+            <th>Start time</th>
+
+            <th>End time</th>
+
+            <th>Status</th>
+
+            <th>Detail</th>
+
+            <th></th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for cmd in cmd_his_list %}
+        <tr>
+            <td>{{ cmd.id }}</td>
+
+            <td>{{ cmd.start_time | date:"Y-m-d H:i:s" }}</td>
+
+            <td>
+                {% if cmd.end_time %} {{ cmd.end_time | date:"Y-m-d H:i:s" }} {% else %}
+                <p>None</p>
+                {% endif %}
+            </td>
+
+
+            <td>
+                {% if cmd.status == 1 %}
+                <p class="running">RUNNING</p>
+                {% elif cmd.status == 2 %}
+                <p class="finished">FINISHED</p>
+                {% elif cmd.status == 3 %}
+                <p class="failed">FAILED</p>
+                {% else %}
+                <p class="none">None</p>
+                {% endif %}
+            </td>
+
+            <td>
+                {% if cmd.detail %} {{ cmd.detail }} {% else %}
+                <p>None</p>
+                {% endif %}
+            </td>
+
+            <td>
                 <div class="btn-group">
-                    <button class="btn blue" id="reload-history">
-                        <span>Reload</span>
-                    </button>
+                    <a class="btn blue his-more">
+                        <i class="m-icon-swapright m-icon-white"></i>
+                    </a>
                 </div>
-            </div>
+            </td>
 
-        </div>
+        </tr>
+        {% endfor %}
 
-        <div class="portlet-body" id="his-table-div">
+    </tbody>
 
-            <table class="table table-striped table-bordered table-hover table-full-width" id="sample_2">
-
-                <thead>
-
-                    <tr>
-
-                        <th>ID</th>
-
-                        <th>Start time</th>
-
-                        <th>End time</th>
-
-                        <th>Status</th>
-
-                        <th>Detail</th>
-
-                        <th></th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {% for cmd in cmd_his_list %}
-                    <tr>
-                        <td>{{ cmd.id }}</td>
-
-                        <td>{{ cmd.start_time | date:"Y-m-d H:i:s" }}</td>
-
-                        <td>
-                            {% if cmd.end_time %}
-                            {{ cmd.end_time | date:"Y-m-d H:i:s" }}
-                            {% else %} <p>None</p>
-                            {% endif %}
-                        </td>
-
-
-                        <td>
-                            {% if cmd.status == 1 %}
-                            <p class="running">RUNNING</p>
-                            {% elif cmd.status == 2 %}
-                            <p class="finished">FINISHED</p>
-                            {% elif cmd.status == 3 %}
-                            <p class="failed">FAILED</p>
-                            {% else %}
-                            <p class="none">None</p>
-                            {% endif %}
-                        </td>
-                        
-                        <td>
-                            {% if cmd.detail %}
-                            {{ cmd.detail }}
-                            {% else %} <p>None</p>
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn blue his-more">
-                                    <i class="m-icon-swapright m-icon-white"></i>
-                                </button>
-                            </div>
-                        </td>
-
-                    </tr>
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-    <!-- END EXAMPLE TABLE PORTLET-->
-
-    <!-- BEGIN EXAMPLE TABLE PORTLET-->
-
-</div>
-
-<div id="box">
-    <div class="circle"></div>
-    <div class="circle1"></div>
-    <div>
-        <p class="loading_text">Please waiting...</p>
-    </div>
-</div>
+</table>

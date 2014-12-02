@@ -15,9 +15,32 @@
 
 
 {% block table %}
-{% include 'index_table.html' %}
+<div class="span12">
+
+    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+
+    <div class="portlet box green">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-globe"></i>Log Details</div>
+            <div class="actions">
+                <div class="btn-group">
+                    <a class="btn green" href="/export_csv_2.html/" id="export-csv">
+                    <i class="icon-download"></i>    
+                    <span>Export CSV</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="portlet-body" id="table-div">
+        {% include 'index_table.html' %}
+        </div>
+    </div>
+
+</div>
 {% endblock %}
 
 {% block scripts %}
-{% include 'index_scripts.html' %}
+{% include 'page_scripts.html' %}
 {% endblock %}

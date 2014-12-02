@@ -292,7 +292,7 @@ $("#search").click(function() {
 
 $("#reload-history").click(function() {
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: "/reload_history.html/",
         cache: false,
         success: function(data, textStatus) {
@@ -304,7 +304,9 @@ $("#reload-history").click(function() {
     });
 });
 
-$(".his-more").click(function() {
-    alert($(this).parents("tr").children('td').eq(0).html());
+$(".his-more").live("click", function() {
+    var request_id = $(this).parents("tr").children('td').eq(0).html();
+    var href = '/cmd_detail.html/?rid=' + request_id;
+    $(this).attr('href', href);
 });
 

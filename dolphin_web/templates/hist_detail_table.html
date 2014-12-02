@@ -6,6 +6,10 @@
 
             <th>ID</th>
 
+            <th>IP addr</th>
+
+            <th>Username</th>
+
             <th>Start time</th>
 
             <th>End time</th>
@@ -14,33 +18,35 @@
 
             <th>Detail</th>
 
-            <th></th>
-
         </tr>
 
     </thead>
 
     <tbody>
 
-        {% for cmd in cmd_his_list %}
+        {% for request_host in request_host_list %}
         <tr>
-            <td>{{ cmd.id }}</td>
+            <td>{{ request_host.id }}</td>
 
-            <td>{{ cmd.start_time | date:"Y-m-d H:i:s" }}</td>
+            <td>{{ request_host.ip_addr }}</td>
+
+            <td>{{ request_host.username }}</td>
+
+            <td>{{ request_host.start_time | date:"Y-m-d H:i:s" }}</td>
 
             <td>
-                {% if cmd.end_time %} {{ cmd.end_time | date:"Y-m-d H:i:s" }} {% else %}
+                {% if request_host.end_time %} {{ request_host.end_time | date:"Y-m-d H:i:s" }} {% else %}
                 <p>None</p>
                 {% endif %}
             </td>
 
 
             <td>
-                {% if cmd.status == 1 %}
+                {% if request_host.status == 1 %}
                 <p class="running">RUNNING</p>
-                {% elif cmd.status == 2 %}
+                {% elif request_host.status == 2 %}
                 <p class="finished">FINISHED</p>
-                {% elif cmd.status == 3 %}
+                {% elif request_host.status == 3 %}
                 <p class="failed">FAILED</p>
                 {% else %}
                 <p class="none">None</p>
@@ -48,17 +54,9 @@
             </td>
 
             <td>
-                {% if cmd.detail %} {{ cmd.detail }} {% else %}
+                {% if request_host.detail %} {{ request_host.detail }} {% else %}
                 <p>None</p>
                 {% endif %}
-            </td>
-
-            <td>
-                <div class="btn-group">
-                    <button class="btn blue his-more">
-                        <i class="m-icon-swapright m-icon-white"></i>
-                    </button>
-                </div>
             </td>
         </tr>
         {% endfor %}

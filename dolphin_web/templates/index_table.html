@@ -1,77 +1,39 @@
-<div class="span12">
+<table class="table table-striped table-bordered table-hover table-full-width" id="sample_1">
+    <thead>
+        <tr>
+            <th class="log-detail-th1">ID</th>
+            <th class="log-detail-th1">Type</th>
+            <th class="log-detail-th2">Timestamp</th>
+            <th class="log-detail-th2">Host</th>
+            <th class="log-detail-th3">Level</th>
+            <th class="log-detail-th3">Severity</th>
+            <th class="log-detail-th2">Description</th>
+            <th class="th-hidden">Details</th>
+        </tr>
 
-    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+    </thead>
 
-    <div class="portlet box green">
-        <div class="portlet-title">
-            <div class="caption"><i class="icon-globe"></i>Log Details</div>
-            <div class="actions">
-                <div class="btn-group">
-                    <a class="btn green" href="/export_csv.html/" id="export-csv">
-                    <i class="icon-download"></i>    
-                    <span>Export CSV</span>
-                    </a>
-                </div>
+    <tbody>
+        {% for ipmi_entry in ipmi_entry_list %}
+        <tr>
+            <td>{{ ipmi_entry.sel_id }}</td>
 
-            </div>
-        </div>
+            <td>{{ ipmi_entry.sel_type }}</td>
 
-        <div class="portlet-body" id="table-div">
+            <td>{{ ipmi_entry.sel_timestamp | date:"Y-m-d H:i:s" }}</td>
 
-            <table class="table table-striped table-bordered table-hover table-full-width" id="sample_1">
-                <thead>
-                    <tr>
-                        <th class="log-detail-th1">ID</th>
-                        <th class="log-detail-th1">Type</th>
-                        <th class="log-detail-th2">Timestamp</th>
-                        <th class="log-detail-th2">Host</th>
-                        <th class="log-detail-th3">Level</th>
-                        <th class="log-detail-th3">Severity</th>
-                        <th class="log-detail-th2">Description</th>
-                        <th class="th-hidden">Details</th>
-                    </tr>
+            <td>{{ ipmi_entry.host.ip_addr }}</td>
 
-                </thead>
+            <td>{{ ipmi_entry.sel_level }}</td>
 
-                <tbody>
-                    {% for ipmi_entry in ipmi_entry_list %}
-                    <tr>
-                        <td>{{ ipmi_entry.sel_id }}</td>
+            <td>{{ ipmi_entry.sel_severity }}</td>
 
-                        <td>{{ ipmi_entry.sel_type }}</td>
+            <td>{{ ipmi_entry.sel_desc }}</td>
 
-                        <td>{{ ipmi_entry.sel_timestamp | date:"Y-m-d H:i:s" }}</td>
+            <td class="td-hidden">{{ ipmi_entry.sel_info }}</td>
 
-                        <td>{{ ipmi_entry.host.ip_addr }}</td>
-                        
-                        <td>{{ ipmi_entry.sel_level }}</td>
-                        
-                        <td>{{ ipmi_entry.sel_severity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 
-                        <td>{{ ipmi_entry.sel_desc }}</td>
-
-                        <td class="td-hidden">{{ ipmi_entry.sel_info }}</td>
-
-                    </tr>
-                    {% endfor %}
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-    <!-- END EXAMPLE TABLE PORTLET-->
-
-    <!-- BEGIN EXAMPLE TABLE PORTLET-->
-
-</div>
-
-<div id="box">
-    <div class="circle"></div>
-    <div class="circle1"></div>
-    <div>
-        <p class="loading_text">Running commands, wait please !</p>
-    </div>
-</div>
+</table>
