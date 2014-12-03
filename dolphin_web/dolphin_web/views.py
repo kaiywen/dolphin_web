@@ -15,7 +15,7 @@ from django.utils import timezone
 from xmlrpclib import ServerProxy
 from settings import REMOTE_SERVER_IP, REMOTE_SERVER_PORT, LOCAL_IP, LOCAL_PORT
 from django.template import loader, Context
-import csv,json,threading
+import csv,json,threading,pickle
 
 def login_view(request):
     """
@@ -83,7 +83,6 @@ def history_view(request):
     else:
         return HttpResponseRedirect('/')
 
-
 request_status = {}
 request_condition = {}
 
@@ -133,8 +132,8 @@ def sel_query_view(request):
             server_addr = "http://%s:%s" % (REMOTE_SERVER_IP, REMOTE_SERVER_PORT)
             dolphind_cb_url = "http://%s:%s/callback.html/" % (LOCAL_IP, LOCAL_PORT)
 
+
             request_condition[request_id] = threading.Semaphore(0)
-        
             dolphind = ServerProxy(server_addr)
             dolphind.request(sel_request.id, dolphind_cb_url)
             request_condition[request_id].acquire()
@@ -145,13 +144,12 @@ def sel_query_view(request):
             request_condition[request_id].acquire()
             return HttpResponse(request_status[request_id])
 
-        else:
+        elif request_type == 3:
             request_id = str(request.session["rid"])
             ipmi_entry_list = Info.objects.filter(request_id=request_id)
             return render_to_response('index_table.html', {'ipmi_entry_list': ipmi_entry_list})
     else:
         return HttpResponseRedirect('/')
-
 
 @csrf_exempt
 def dolphind_cb_view(request):
