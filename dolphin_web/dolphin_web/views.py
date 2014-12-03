@@ -15,7 +15,9 @@ from django.utils import timezone
 from xmlrpclib import ServerProxy
 from settings import REMOTE_SERVER_IP, REMOTE_SERVER_PORT, LOCAL_IP, LOCAL_PORT
 from django.template import loader, Context
-import csv,json,threading,pickle
+from const import *
+import csv,json
+import posix_ipc
 
 def login_view(request):
     """
@@ -83,8 +85,6 @@ def history_view(request):
     else:
         return HttpResponseRedirect('/')
 
-request_status = {}
-request_condition = {}
 
 @csrf_exempt
 def sel_query_view(request):
@@ -93,21 +93,22 @@ def sel_query_view(request):
         Return the sel list
         Corresponding URL : (ip:port/sel_query.html)
     """
-
-    global request_status
-    global request_condition
-
     if request.user.is_authenticated():
         request_type = int(request.POST["request_type"])
-        if request_type == 1:   ## First query
-            sel_request = Request(start_time=timezone.now(), status=0, detail='')
+        """
+            The client polls for data for three times totally
+            The first two times query the command statuses
+            The last query asks for the sel list
+        """
+        if request_type == REQ_FOR_STATUS:
+            sel_request = Request(start_time=timezone.now(), status=INITIAL, detail='')
             sel_request.save()
             request_id = str(sel_request.id)
             request.session["rid"] = request_id
 
             request_class = int(request.POST["request_class"])  ##single-cmd or multi-cmd
             
-            if request_class == 1:
+            if request_class == SINGLE:  ##for a single command
                 username, password, ip = (
                     request.POST["username"], 
                     request.POST["password"],
@@ -116,35 +117,46 @@ def sel_query_view(request):
                 sel_host = RequestHost(
                     ip_addr=ip, username=username, 
                     password=password, start_time=timezone.now(), 
-                    request_id=sel_request.id, status=0, detail='')
+                    request_id=sel_request.id, status=INITIAL, detail='')
                 sel_host.save()
             
-            elif request_class == 2:
+            elif request_class == MULTIPLE:  ##for multiple commands
                 cmd_string = request.POST["cmd_list"]
                 cmd_list = json.loads(cmd_string)
                 for cmd in cmd_list:
                     sel_host = RequestHost(
                         ip_addr=cmd["ip_addr"], username=cmd["username"], 
                         password=cmd["password"], start_time=timezone.now(), 
-                        request_id=sel_request.id, status=0, detail='')
+                        request_id=sel_request.id, status=INITIAL, detail='')
                     sel_host.save()
 
             server_addr = "http://%s:%s" % (REMOTE_SERVER_IP, REMOTE_SERVER_PORT)
             dolphind_cb_url = "http://%s:%s/callback.html/" % (LOCAL_IP, LOCAL_PORT)
 
-
-            request_condition[request_id] = threading.Semaphore(0)
+            semaph = posix_ipc.Semaphore(name="/%s" % request_id, flags = posix_ipc.O_CREAT, initial_value = 0)
+            
             dolphind = ServerProxy(server_addr)
             dolphind.request(sel_request.id, dolphind_cb_url)
-            request_condition[request_id].acquire()
-            return HttpResponse(request_status[request_id])
+            semaph.acquire()
+            return HttpResponse(RUNNING)
 
-        elif request_type == 2:
+        elif request_type == REQ_FOR_SECOND_STATUS:
             request_id = str(request.session["rid"])
-            request_condition[request_id].acquire()
-            return HttpResponse(request_status[request_id])
+            semaph = posix_ipc.Semaphore(name="/%s" % request_id, flags = 0)
+            semaph.acquire()
+            semaph.unlink()
+            detail = Request.objects.get(id=request_id).detail
 
-        elif request_type == 3:
+            """
+                It should be reminded that detail[0] indicates the successful number of hosts
+                in a query. so (detail[0] == 0) means all the queries in a request fail. 
+            """
+            if int(detail[0]):
+                return HttpResponse(FINISHED)
+            else:
+                return HttpResponse(FAILED)
+
+        elif request_type == REQ_FOR_CONTENT:
             request_id = str(request.session["rid"])
             ipmi_entry_list = Info.objects.filter(request_id=request_id)
             return render_to_response('index_table.html', {'ipmi_entry_list': ipmi_entry_list})
@@ -153,19 +165,9 @@ def sel_query_view(request):
 
 @csrf_exempt
 def dolphind_cb_view(request):
-    global request_status
-    global request_condition
-    request_id, status, succ_counter = (str(request.GET["request_id"]), 
-                                        int(request.GET["status"]),
-                                        int(request.GET["success_count"]))
-    if status == 2:
-        if succ_counter != 0:
-            request_status[request_id] = status
-        else:
-            request_status[request_id] = 3
-    else:
-        request_status[request_id] = status
-    request_condition[request_id].release()
+    request_id = str(request.GET["request_id"])
+    semaph = posix_ipc.Semaphore(name="/%s" % request_id, flags = 0)
+    semaph.release()
 
 
 def export_csv_view(request):
@@ -186,6 +188,8 @@ def export_csv_view(request):
     else:
         return HttpResponseRedirect('/')
 
+
+
 @csrf_exempt
 def reload_history_view(request):
     if request.user.is_authenticated():
@@ -193,6 +197,7 @@ def reload_history_view(request):
         return render_to_response('hist_table.html', {'cmd_his_list': cmd_his_list})
     else:
         return HttpResponseRedirect('/')
+
 
 
 @csrf_exempt
@@ -207,6 +212,7 @@ def cmd_detail_view(request):
                 'cmd_id' : request_id, 'ipmi_entry_list': ipmi_entry_list})
     else:
         return HttpResponseRedirect('/')
+
 
 
 def export_csv2_view(request):

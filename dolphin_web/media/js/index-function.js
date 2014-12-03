@@ -102,7 +102,7 @@ $("#s-exec-ipmi").click(function() {
                             $(".alert-error").show();
                             break;
                         case "1":
-                            $("#box p").html(" Running commands, wait please!");
+                            $("#box p").html("Running commands, wait please!");
                             poll("", "", "", 2, 1);
                             break;
                         case "2":
@@ -116,6 +116,7 @@ $("#s-exec-ipmi").click(function() {
                             $('#box').click(function() {
                                 $.unblockUI();
                                 $("#export-csv").hide();
+                                $("#box p").html("Running commands, wait please!");
                             });
                             break;
                         default:
@@ -123,6 +124,7 @@ $("#s-exec-ipmi").click(function() {
                             TableAdvanced.init();
                             $("#export-csv").show();
                             $.unblockUI();
+                            $("#box p").html("Running commands, wait please!");
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -184,6 +186,7 @@ $("#m-exec-ipmi").click(function() {
                             $('#box').click(function() {
                                 $.unblockUI();
                                 $("#export-csv").hide();
+                                $("#box p").html("Running commands, wait please!");
                             });
                             break;
                         default:
@@ -191,6 +194,7 @@ $("#m-exec-ipmi").click(function() {
                             TableAdvanced.init();
                             $("#export-csv").show();
                             $.unblockUI();
+                            $("#box p").html("Running commands, wait please!");
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
