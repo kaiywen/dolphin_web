@@ -1,7 +1,7 @@
 
-/*.severity, .type {
+.severity, .type {
     width: 100%;
-}*/
+}
 .th-hidden, .td-hidden {
     display: none;
 }

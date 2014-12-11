@@ -48,7 +48,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -64,9 +63,9 @@ WSGI_APPLICATION = 'dolphin_web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mydatabase',
+        'NAME': 'dolphin',
         'USER': 'root',
-        'PASSWORD': 'wky1991',
+        'PASSWORD': 'password',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -103,5 +102,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 REMOTE_SERVER_IP = '114.212.82.69'
 REMOTE_SERVER_PORT = '10010'
-LOCAL_IP = '114.212.87.99'
-LOCAL_PORT = '8000'
+LOCAL_IP = '114.212.87.184'
+LOCAL_PORT = '9000'

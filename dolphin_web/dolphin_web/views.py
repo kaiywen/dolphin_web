@@ -97,8 +97,8 @@ def sel_query_view(request):
         request_type = int(request.POST["request_type"])
         """
             The client polls for data for three times totally
-            The first two times ask for status
-            The last query asks for the final sel list
+            The first two times query the command statuses
+            The last query asks for the sel list
         """
         if request_type == REQ_FOR_STATUS:
             sel_request = Request(start_time=timezone.now(), status=INITIAL, detail='')

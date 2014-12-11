@@ -258,6 +258,35 @@ $("#m-exec-del").click(function() {
 });
 
 $("#search").click(function() {
+/*    var severity = $("#chosen-severity").val();
+    var level = $("#chosen-level").val();
+    var date_from = $("#date-from").val();
+    var date_to = $("#date-to").val();
+    var fDate, tDate;
+    fDate = new Date(Date.parse(date_from, "yyyy-mm-dd hh:ii:ss"));
+    if (date_to != "")
+        tDate = new Date(Date.parse(date_to, "yyyy-mm-dd hh:ii:ss"));
+    else
+        tDate = new Date(Date.parse("3000-01-01 00:00:00", "yyyy-mm-dd hh:ii:ss"));
+
+    var sample_1_tb = $("#sample_1").dataTable();
+    rows = sample_1_tb.fnGetNodes();
+
+    sample_1_tb.each(function() {
+        for (var i = 0; i < rows.length; i++) {
+            var timestamp = $(rows[i]).children('td').eq(3).html();
+            var row_level = $(rows[i]).children('td').eq(5).html();
+            var row_sever = $(rows[i]).children('td').eq(6).html();
+            var datetime = new Date(Date.parse(timestamp, "yyyy-mm-dd hh:ii:ss"));
+
+            if ((timestamp == "" || (datetime >= fDate && datetime < tDate)) &&
+                (severity == "ALL" || (row_sever == severity)) &&
+                (level == "ALL" || (row_level == level)))
+                $(rows[i]).show();
+            else
+                $(rows[i]).hide();
+        }
+    });*/
     var sample_1_tb = $("#sample_1").DataTable();
     sample_1_tb.draw();
 });
