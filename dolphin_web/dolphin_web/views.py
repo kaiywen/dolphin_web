@@ -65,6 +65,7 @@ def validate_view(request):
     else:
         return HttpResponse("error")
 
+
 def logout_view(request):
     """
         Log out the visitor
@@ -163,6 +164,7 @@ def sel_query_view(request):
     else:
         return HttpResponseRedirect('/')
 
+
 @csrf_exempt
 def dolphind_cb_view(request):
     request_id = str(request.GET["request_id"])
@@ -189,7 +191,6 @@ def export_csv_view(request):
         return HttpResponseRedirect('/')
 
 
-
 @csrf_exempt
 def reload_history_view(request):
     if request.user.is_authenticated():
@@ -197,7 +198,6 @@ def reload_history_view(request):
         return render_to_response('hist_table.html', {'cmd_his_list': cmd_his_list})
     else:
         return HttpResponseRedirect('/')
-
 
 
 @csrf_exempt
